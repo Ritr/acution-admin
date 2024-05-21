@@ -10,3 +10,12 @@ export async function GET() {
         return NextResponse.json({ error });
     }
 }
+export async function POST(request) {
+    const data = await request.json();
+    console.log(data);
+    try {
+        return NextResponse.json({ xxx: "xxx" });
+    } catch (error) {
+        return NextResponse.json({ error });
+    }
+}

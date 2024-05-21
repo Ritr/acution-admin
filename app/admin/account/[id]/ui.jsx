@@ -14,45 +14,27 @@ import {
 } from "@tanstack/react-query";
 import { ToastContainer, toast } from "react-toastify";
 import { useEffect } from "react";
-export default function Page() {
+export default function Page({ defaultAccount }) {
+    console.log(defaultAccount);
     const mutation = useMutation({
         mutationFn: (data) => {
-            return fetch("/api/account", {
-                method: "POST",
-                body: JSON.stringify(data),
+            data._id = defaultAccount._id;
+            return fetch("/api/account/" + defaultAccount._id, {
+                method: "PUT",
+                body: JSON.stringify(data)
             });
         },
     });
     const handleSubmit = async (event) => {
         event.preventDefault();
         const formData = new FormData(event.target);
-        const password = formData.get("password");
-        const password2 = formData.get("password2");
         const email = formData.get("email");
         const name = formData.get("name");
         const status = formData.get("status");
         const permissions = formData.get("permissions");
-        if (password !== password2) {
-            toast.warn("密碼不一致");
-            return;
-        }
-
-        // setRegisterStatus({ success: false, error: null, loading: true });
-        // const res = await fetch("/api/register", {
-        //     method: "POST",
-        //     body: formData
-        // });
-        // const data = await res.json();
-        // if (data.error) {
-        //     setRegisterStatus({ success: false, error: data.error, loading: false });
-        //     return;
-        // } else {
-        //     setRegisterStatus({ success: true, error: null, loading: false });
-        // }
         mutation.mutate({
             email: email,
             name: name,
-            password: password,
             status: status,
             permissions: permissions
         });
@@ -75,24 +57,16 @@ export default function Page() {
             <form action="" onSubmit={handleSubmit}>
                 <div className="pb-2">
                     <Label htmlFor="email">Email</Label>
-                    <Input type="email" id="email" name="email" placeholder="Email" required />
+                    <Input type="email" id="email" name="email" placeholder="Email" defaultValue={defaultAccount.email} required />
                 </div>
 
                 <div className="pb-2">
                     <Label htmlFor="name">Name</Label>
-                    <Input id="name" name="name" placeholder="Name" required />
-                </div>
-                <div className="pb-2">
-                    <Label htmlFor="password">Password</Label>
-                    <Input id="password" name="password" placeholder="Password" required />
-                </div>
-                <div className="pb-2">
-                    <Label htmlFor="password2">Confirm Password</Label>
-                    <Input id="password2" name="password2" placeholder="Password" required />
+                    <Input id="name" name="name" placeholder="Name" required defaultValue={defaultAccount.name} />
                 </div>
                 <div className="pb-2">
                     <Label htmlFor="permissions">Permissions</Label>
-                    <Select id="permissions" name="permissions" required>
+                    <Select id="permissions" name="permissions" required defaultValue={defaultAccount.permissions}>
                         <SelectTrigger>
                             <SelectValue placeholder="Select permissions" />
                         </SelectTrigger>
@@ -104,7 +78,7 @@ export default function Page() {
                 </div>
                 <div className="pb-2">
                     <Label htmlFor="status">Status</Label>
-                    <Select id="status" name="status" defaultValue="Activated" required>
+                    <Select id="status" name="status" defaultValue={defaultAccount.status} required>
                         <SelectTrigger>
                             <SelectValue placeholder="Status" />
                         </SelectTrigger>

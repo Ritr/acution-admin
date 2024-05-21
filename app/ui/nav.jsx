@@ -10,14 +10,14 @@ const NextBreadcrumb = () => {
     }
     return (
         <div>
-            <ul className="flex gap-1">
+            <ul className="flex gap-1 mb-4">
                 {
                     pathNames.map((link, index) => {
                         let href = `/${pathNames.slice(0, index + 1).join("/")}`;
                         return (
                             <React.Fragment key={index}>
                                 <li >
-                                    <Link href={href}>{link}</Link>
+                                    <a href={href}>{link}</a>
                                 </li>
                                 {pathNames.length !== index + 1 && "/"}
                             </React.Fragment>
