@@ -9,7 +9,7 @@ const AccountSchema = new Schema(
     {
         email: String,
         name: String,
-        password: String,
+        password: { type: String, select: false },
         permissions: String,
         status: {
             type: String,

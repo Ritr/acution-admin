@@ -3,7 +3,7 @@ import Account from '@/models/account';
 import { NextResponse } from 'next/server';
 export async function GET() {
     await connectMongo();
-    const accounts = await Account.find();
+    const accounts = await Account.find({},"_id name email permissions status");
     return NextResponse.json(accounts);
 }
 export async function POST(request) {

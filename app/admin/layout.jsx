@@ -1,6 +1,5 @@
 "use client";
 import Link from "next/link";
-import { Listbox, ListboxItem } from "@nextui-org/listbox";
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, } from "@nextui-org/navbar";
 import {
     NavigationMenu,
@@ -34,7 +33,7 @@ export default function Layout({ children }) {
                                     </Link>
                                 </NavigationMenuItem>
                                 <NavigationMenuItem>
-                                    <Link href="/member" legacyBehavior passHref>
+                                    <Link href="/admin/member" legacyBehavior passHref>
                                         <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                                             Member Manage
                                         </NavigationMenuLink>
@@ -43,18 +42,18 @@ export default function Layout({ children }) {
                                 <NavigationMenuItem className="relative group/sub">
                                     <NavigationMenuTrigger>Bid Manage</NavigationMenuTrigger>
                                     <div className="hidden group-hover/sub:flex absolute left-0 right-0  flex-col ">
-                                        <Link href="/property" className="rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground">Property</Link>
-                                        <Link href="/carpark" className="rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground">Car Park</Link>
+                                        <Link href="/admin/property" className="rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground">Property</Link>
+                                        <Link href="/admin/carpark" className="rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground">Car Park</Link>
                                     </div>
                                 </NavigationMenuItem>
                                 <NavigationMenuItem className="relative group/sub">
                                     <NavigationMenuTrigger>Content Manage</NavigationMenuTrigger>
                                     <div className="hidden group-hover/sub:flex absolute left-0 right-0  flex-col">
-                                        <Link href="/contact" className="rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground">Contact</Link>
-                                        <Link href="/about" className="rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground">About</Link>
-                                        <Link href="/faq" className="rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground">FAQ</Link>
-                                        <Link href="/policy" className="rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground">Policy</Link>
-                                        <Link href="/tagline" className="rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground">Tagline</Link>
+                                        <Link href="/admin/contact" className="rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground">Contact</Link>
+                                        <Link href="/admin/about" className="rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground">About</Link>
+                                        <Link href="/admin/faq" className="rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground">FAQ</Link>
+                                        <Link href="/admin/policy" className="rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground">Policy</Link>
+                                        <Link href="/admin/tagline" className="rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground">Tagline</Link>
                                     </div>
                                 </NavigationMenuItem>
                             </NavigationMenuList>

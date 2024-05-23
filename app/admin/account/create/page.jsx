@@ -36,19 +36,6 @@ export default function Page() {
             toast.warn("密碼不一致");
             return;
         }
-
-        // setRegisterStatus({ success: false, error: null, loading: true });
-        // const res = await fetch("/api/register", {
-        //     method: "POST",
-        //     body: formData
-        // });
-        // const data = await res.json();
-        // if (data.error) {
-        //     setRegisterStatus({ success: false, error: data.error, loading: false });
-        //     return;
-        // } else {
-        //     setRegisterStatus({ success: true, error: null, loading: false });
-        // }
         mutation.mutate({
             email: email,
             name: name,

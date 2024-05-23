@@ -1,14 +1,8 @@
 "use client";
-import { ReloadIcon } from "@radix-ui/react-icons"
 import { useEffect, useState } from "react";
 import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table"
+    Table, TableHeader, TableBody, TableColumn, TableRow, TableCell, Spinner
+} from "@nextui-org/react";
 import { Button } from "@/components/ui/button";
 import {
     AlertDialog,
@@ -80,32 +74,23 @@ export default function Page() {
             <div className="border rounded-md mt-2">
                 <Table>
                     <TableHeader>
-                        <TableRow>
-                            <TableHead>
-                                Email
-                            </TableHead>
-                            <TableHead>
-                                Name
-                            </TableHead>
-                            <TableHead>
-                                Permissions
-                            </TableHead>
-                            <TableHead>
-                                Status
-                            </TableHead>
-                            <TableHead>
-                                Actions
-                            </TableHead>
-                        </TableRow>
+                        <TableColumn>
+                            Email
+                        </TableColumn>
+                        <TableColumn>
+                            Name
+                        </TableColumn>
+                        <TableColumn>
+                            Permissions
+                        </TableColumn>
+                        <TableColumn>
+                            Status
+                        </TableColumn>
+                        <TableColumn>
+                            Actions
+                        </TableColumn>
                     </TableHeader>
-                    <TableBody className="relative min-h-24">
-                        {
-                            (mutation.isPending || removeMutation.isPending) ? (
-                                <div className="left-0 top-0 right-0 bottom-0 absolute flex items-center justify-center bg-opacity-50 bg-white">
-                                    <ReloadIcon className="h-4 w-4 animate-spin" />
-                                </div>
-                            ) : null
-                        }
+                    <TableBody className="relative min-h-24" loadingContent={<Spinner label="Loading..." />} isLoading={(mutation.isPending || removeMutation.isPending)}>
                         {list.map((account) => (
                             <TableRow key={account._id}>
                                 <TableCell>{account.email}</TableCell>
