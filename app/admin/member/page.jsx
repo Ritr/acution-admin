@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { Table, TableHeader, TableBody, TableColumn, TableRow, TableCell, Pagination, Spinner } from "@nextui-org/react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import {
     useMutation
@@ -10,14 +11,22 @@ import { ToastContainer, toast } from "react-toastify";
 export default function Page() {
     const [list, setList] = useState([]);
     // const [totalCount, setTotalCount] = useState(0);
+    const [searchQuery, setSearchQuery] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    const [sortDescriptor, setSortDescriptor] = useState([]);
     const mutation = useMutation({
-        mutationFn: (currentPage = 1) => {
-            return fetch("/api/member?page=" + currentPage);
+        mutationFn: () => {
+            return fetch("/api/member?page=" + currentPage + "&searchQuery=" + searchQuery);
         },
     });
-
+    const search = () => {
+        if (currentPage === 1) {
+            mutation.mutate();
+        } else {
+            setCurrentPage(1);
+        }
+    }
     useEffect(() => {
         if (mutation.isSuccess) {
             mutation.data.json().then((res) => {
@@ -34,48 +43,60 @@ export default function Page() {
     }, [mutation.isSuccess, mutation.isError, mutation.data]);
 
     useEffect(() => {
-        mutation.mutate(currentPage);
+        mutation.mutate();
     }, [currentPage]);
+    useEffect(() => {
+        console.log("sortDescriptor", sortDescriptor);
+    }, [ sortDescriptor]);
     return (
         <div>
             <ToastContainer autoClose={2000} position="top-center" />
-            <Link asChild href="/admin/member/create">
-                <Button variant="outline">Create</Button>
-            </Link>
+            <div className="flex  justify-between">
+                <Link asChild href="/admin/member/create">
+                    <Button>Create</Button>
+                </Link>
+                <div className="flex gap-4">
+                    <Input className="w-48" onChange={(e) => {
+                        setSearchQuery(e.target.value);
+                    }} placeholder="Search"></Input>
+                    <Button onClick={search}>Search</Button>
+                </div>
+            </div>
+
             <div>
-                <Table className="mt-2" radius="sm">
+                <Table className="mt-2" radius="sm" sortDescriptor={sortDescriptor} onSortChange={setSortDescriptor}>
                     <TableHeader>
                         {/* <TableColumn>
                                 ID
                             </TableColumn> */}
-                        <TableColumn>
+                        <TableColumn allowsSorting key="email">
                             Email
                         </TableColumn>
-                        <TableColumn>
+                        <TableColumn allowsSorting key="englishName">
                             English name
                         </TableColumn>
-                        <TableColumn>
+                        <TableColumn allowsSorting key="englishSurname">
                             English surname
                         </TableColumn>
-                        <TableColumn>
+                        <TableColumn allowsSorting key="chineseName">
                             Chinese name
                         </TableColumn>
-                        <TableColumn>
+                        <TableColumn allowsSorting key="chineseSurname">
                             Chinese surname
                         </TableColumn>
-                        <TableColumn>
+                        <TableColumn allowsSorting key="phone">
                             Phone
                         </TableColumn>
-                        <TableColumn>
+                        <TableColumn allowsSorting key="code">
                             Code
                         </TableColumn>
-                        <TableColumn>
+                        <TableColumn allowsSorting key="status">
                             Status
                         </TableColumn>
-                        <TableColumn>
+                        <TableColumn allowsSorting>
                             Reason for banning
                         </TableColumn>
-                        <TableColumn>
+                        <TableColumn allowsSorting key="promotion">
                             Promotion recevial
                         </TableColumn>
                         <TableColumn>
@@ -108,8 +129,11 @@ export default function Page() {
                         ))}
                     </TableBody>
                 </Table>
-                <Pagination className="mt-4" total={totalPages} initialPage={1} radius="sm" onChange={(page) => { setCurrentPage(page) }} />
+                {
+                    totalPages > 0 &&
+                    <Pagination className="mt-4" total={totalPages} page={currentPage} radius="sm" onChange={(page) => { setCurrentPage(page) }} />
+                }
             </div>
-        </div>
+        </div >
     )
 }
