@@ -40,7 +40,7 @@ export default function Layout({ children }) {
                                     </Link>
                                 </NavigationMenuItem>
                                 <NavigationMenuItem className="relative group/sub">
-                                    <NavigationMenuTrigger>Bid Manage</NavigationMenuTrigger>
+                                    <NavigationMenuTrigger>Auction Items Manage</NavigationMenuTrigger>
                                     <div className="hidden group-hover/sub:flex absolute left-0 right-0  flex-col ">
                                         <Link href="/admin/property" className="rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground">Property</Link>
                                         <Link href="/admin/carpark" className="rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground">Car Park</Link>

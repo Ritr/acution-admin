@@ -14,7 +14,7 @@ const PropertySchema = new Schema(
         PropertyType: String,
         Region: String,
         AuctionNature: String,
-        BIddingStatus: String,
+        BiddingStatus: String,
         title: String,
         address: String,
         startingPrice: Number,

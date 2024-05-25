@@ -71,10 +71,8 @@ export default function Page() {
             <ToastContainer autoClose={2000} position="top-center" />
             <div className="flex gap-4">
                 <Link asChild href="/admin/account/create">
-                    <Button variant="outline">Create</Button>
+                    <Button>Create</Button>
                 </Link>
-                <Input></Input>
-                <Button variant="outline">Create</Button>
             </div>
             <div className="border rounded-md mt-2">
                 <Table>
