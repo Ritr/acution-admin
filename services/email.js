@@ -1,19 +1,19 @@
 //import { Resend } from 'resend';
 const { Resend } = require('resend');
-const resend = new Resend('re_5ucgZKJZ_9Ufypcimm9UxQ6gV36LvNqzy');
-// export const sendEmail = (to, subject, text) => {
-//     console.log(to, subject, text);
-//     resend.emails.send({
-//         from: 'onboarding@resend.dev',
-//         to: to,
-//         subject: subject,
-//         text: text
-//     });
-// }
+const resend = new Resend('re_HYPAb9fw_5dmWbvoSgeQJqDfe2EqMKS7e');
+export const sendEmail = (to, subject, text) => {
+    console.log(to, subject, text);
+    resend.emails.send({
+        from: 'hkauction-demo@ritr.site',
+        to: to,
+        subject: subject,
+        text: text
+    });
+}
 
-resend.emails.send({
-    from: 'auction@resend.dev',
-    to: 'http_wenwen@163.com',
-    subject: 'Hello World',
-    text: '张三测试'
-});
+// resend.emails.send({
+//     from: 'auction@ritr.site',
+//     to: '337634268@qq.com',
+//     subject: 'Hello World',
+//     text: '张三测试'
+// });

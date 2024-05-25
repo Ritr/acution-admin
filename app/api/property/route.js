@@ -12,13 +12,14 @@ export async function GET(request) {
         await connectMongo();
         const query = searchQuery
             ? {
+                deleted:false,
                 $or: [
                     { name: { $regex: searchQuery, $options: 'i' } },
                     { email: { $regex: searchQuery, $options: 'i' } },
                     { phone: { $regex: searchQuery, $options: 'i' } },
                 ],
             }
-            : {};
+            : {deleted:false};
         const properties = await Property.find(query)
             .sort({ [sortField]: sortOrder * 1 })
             .skip((page - 1) * limit)
@@ -26,11 +27,11 @@ export async function GET(request) {
         // 根据时间判断，如果是撤回、禁止之类的状态，就跳过
         properties.map(item => {
             if (new Date(item.endDateTime) <= new Date()) {
-                item.BiddingStatus = "Completed";
+                item.status = "Completed";
             } else if (new Date(item.startDateTime) >= new Date()) {
-                item.BiddingStatus = "AboutToStart";
+                item.status = "AboutToStart";
             } else {
-                item.BiddingStatus = "InProgress";
+                item.status = "InProgress";
             }
         });
         const totalCount = await Property.countDocuments(query);

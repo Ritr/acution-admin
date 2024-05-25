@@ -4,7 +4,6 @@ import {
     Table, TableHeader, TableBody, TableColumn, TableRow, TableCell, Spinner
 } from "@nextui-org/react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -71,7 +70,7 @@ export default function Page() {
             <ToastContainer autoClose={2000} position="top-center" />
             <div className="flex gap-4">
                 <Link asChild href="/admin/account/create">
-                    <Button>Create</Button>
+                    <Button>New Account</Button>
                 </Link>
             </div>
             <div className="border rounded-md mt-2">

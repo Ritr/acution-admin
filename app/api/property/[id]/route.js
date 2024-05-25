@@ -1,8 +1,9 @@
 import connectMongo from "@/lib/connect-mongo";
-import User from "@/models/user";
+import Property from "@/models/property";
 import { NextResponse } from "next/server";
 import { sendEmail } from "@/services/email";
 export async function PUT(request, { params }) {
+    await connectMongo();
     const { id } = params;
     const {
         email,
@@ -19,9 +20,8 @@ export async function PUT(request, { params }) {
         promotion,
         reasonForBanning
     } = await request.json();
-    const account = await User.findById(id);
+    const account = await Property.findById(id);
     if (account) {
-        await connectMongo();
         const oldStatus = account.status;
         account.email = email;
         account.countryAndRegion = countryAndRegion;
@@ -56,7 +56,7 @@ export async function DELETE(request, { params }) {
     const { id } = params;
     try {
         await connectMongo();
-        await User.findByIdAndDelete(id);
+        await Property.findByIdAndUpdate(id, { $set: { deleted: true } });
         return NextResponse.json({ msg: "delete success" });
     } catch (error) {
         return NextResponse.json({ error });

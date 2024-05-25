@@ -10,6 +10,17 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import dayjs from "dayjs";
 
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 export default function Page() {
     const [list, setList] = useState([]);
     // const [totalCount, setTotalCount] = useState(0);
@@ -44,6 +55,13 @@ export default function Page() {
             return fetch(url);
         },
     });
+    const removeMutation = useMutation({
+        mutationFn: (id) => {
+            return fetch("/api/property/" + id, {
+                method: "DELETE"
+            });
+        },
+    });
     const search = () => {
         if (currentPage === 1) {
             mutation.mutate();
@@ -58,6 +76,10 @@ export default function Page() {
     useEffect(() => {
         if (mutation.isSuccess) {
             mutation.data.json().then((res) => {
+                if (res.error) {
+                    toast.error(res.error);
+                    return;
+                }
                 setList(res.properties);
                 const totalPages = Math.ceil(res.totalCount / 10);
                 setTotalPages(totalPages);
@@ -69,7 +91,23 @@ export default function Page() {
             });
         }
     }, [mutation.isSuccess, mutation.isError, mutation.data]);
-
+    useEffect(() => {
+        if (removeMutation.isSuccess) {
+            removeMutation.data.json().then((res) => {
+                if (res.error) {
+                    toast.error(res.error);
+                    return;
+                }
+                toast.success(res.msg);
+            });
+            mutation.mutate();
+        }
+        if (removeMutation.isError) {
+            removeMutation.data.json().then((res) => {
+                toast.error(res.error);
+            });
+        }
+    }, [removeMutation.isSuccess, removeMutation.isError]);
     useEffect(() => {
         mutation.mutate();
     }, [currentPage, sortDescriptor]);
@@ -102,6 +140,9 @@ export default function Page() {
                         <TableColumn allowsSorting key="email">
                             Address
                         </TableColumn>
+                        <TableColumn allowsSorting key="email">
+                            region
+                        </TableColumn>
                         <TableColumn allowsSorting key="englishName">
                             StartDateTime
                         </TableColumn>
@@ -109,7 +150,10 @@ export default function Page() {
                             EndDateTime
                         </TableColumn>
                         <TableColumn allowsSorting key="chineseName">
-                            Chinese name
+                            Reserve Price
+                        </TableColumn>
+                        <TableColumn allowsSorting key="chineseName">
+                            Current Price
                         </TableColumn>
                         <TableColumn allowsSorting key="chineseSurname">
                             StartingPrice
@@ -126,28 +170,49 @@ export default function Page() {
                             <TableRow key={property._id}>
                                 <TableCell>{property.title}</TableCell>
                                 <TableCell>{property.address}</TableCell>
+                                <TableCell>{property.region}</TableCell>
                                 <TableCell>{dayjs(property.startDateTime).format("YYYY-MM-DD")}</TableCell>
                                 <TableCell>{dayjs(property.endDateTime).format("YYYY-MM-DD")}</TableCell>
-                                <TableCell>{property.chineseSurname}</TableCell>
+                                <TableCell>{property.reservePrice}</TableCell>
+                                <TableCell>{property.currentPrice}</TableCell>
                                 <TableCell>{property.startingPrice.toLocaleString()}</TableCell>
                                 <TableCell>
                                     {/* AboutToStart InProgress Completed Aborted Cancelled */}
                                     {
-                                        property.BiddingStatus == "AboutToStart" ?
-                                            <Chip radius="sm" color="warning">{property.BiddingStatus}</Chip> :
-                                            property.BiddingStatus == "InProgress" ?
-                                                <Chip radius="sm" color="success">{property.BiddingStatus}</Chip> :
-                                                property.BiddingStatus == "Completed" ?
-                                                    <Chip radius="sm" color="primary">{property.BiddingStatus}</Chip> :
-                                                    property.BiddingStatus == "Aborted" ?
-                                                        <Chip radius="sm" color="danger">{property.BiddingStatus}</Chip> :
-                                                        <Chip radius="sm" color="success">{property.BiddingStatus}</Chip>
+                                        property.status == "AboutToStart" ?
+                                            <Chip radius="sm" color="warning">{property.status}</Chip> :
+                                            property.status == "InProgress" ?
+                                                <Chip radius="sm" color="success">{property.status}</Chip> :
+                                                property.status == "Completed" ?
+                                                    <Chip radius="sm" color="primary">{property.status}</Chip> :
+                                                    property.status == "Aborted" ?
+                                                        <Chip radius="sm" color="danger">{property.status}</Chip> :
+                                                        <Chip radius="sm" color="success">{property.status}</Chip>
                                     }
                                 </TableCell>
                                 <TableCell>
                                     <Button variant="outline" className="mr-2 py-1 px-2 text-xs h-7">
                                         <a href={"/admin/member/" + property._id} className="w-full">Edit</a>
                                     </Button>
+                                    <AlertDialog>
+                                        <AlertDialogTrigger>
+                                            <Button variant="destructive" className="py-1 px-2 text-xs h-7">
+                                                Delete
+                                            </Button>
+                                        </AlertDialogTrigger>
+                                        <AlertDialogContent>
+                                            <AlertDialogHeader>
+                                                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                                <AlertDialogDescription>
+                                                    Confirms whether to delete.
+                                                </AlertDialogDescription>
+                                            </AlertDialogHeader>
+                                            <AlertDialogFooter>
+                                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                <AlertDialogAction onClick={() => { removeMutation.mutate(property._id) }}>Continue</AlertDialogAction>
+                                            </AlertDialogFooter>
+                                        </AlertDialogContent>
+                                    </AlertDialog>
                                 </TableCell>
                             </TableRow>
                         ))}

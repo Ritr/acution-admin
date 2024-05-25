@@ -8,11 +8,11 @@ import { model, models, Schema } from 'mongoose';
 // 前7個屬性跟字典表value對應，所以大寫
 const CarParkSchema = new Schema(
     {
-        LandUse: String,
-        Type: String,
-        Region: String,
-        Environment:String,
-        BIddingStatus: String,
+        landUse: String,
+        type: String,
+        region: String,
+        environment:String,
+        status: String,
         title: String,
         address: String,
         startingPrice: Number,

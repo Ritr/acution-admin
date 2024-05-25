@@ -76,7 +76,7 @@ export default function Page() {
             <ToastContainer autoClose={2000} position="top-center" />
             <div className="flex  justify-between">
                 <Link asChild href="/admin/member/create">
-                    <Button>Create</Button>
+                    <Button>New member</Button>
                 </Link>
                 <div className="flex gap-4">
                     <Input className="w-48" onChange={(e) => {
