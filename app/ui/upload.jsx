@@ -11,7 +11,7 @@ import {
 import { useEffect, useState } from "react";
 
 
-export default function AdvancedDropzoneDemo({ defaultValue = [], maxFiles = 3, onChange }) {
+export default function AdvancedDropzoneDemo({ defaultValue, maxFiles = 3, onChange }) {
     const [extFiles, setExtFiles] = useState([]);
     const [imageSrc, setImageSrc] = useState();
     const [videoSrc, setVideoSrc] = useState();
@@ -88,6 +88,7 @@ export default function AdvancedDropzoneDemo({ defaultValue = [], maxFiles = 3, 
                     uploadButton: {},
                 }}
             >
+                {/* {JSON.stringify(extFiles)} */}
                 {extFiles ? extFiles.map((file) => (
                     <FileMosaic
                         {...file}

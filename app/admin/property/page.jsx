@@ -134,28 +134,28 @@ export default function Page() {
                         {/* <TableColumn>
                                 ID
                             </TableColumn> */}
-                        <TableColumn allowsSorting key="email">
+                        <TableColumn allowsSorting key="englishTitle">
                             Title
                         </TableColumn>
-                        <TableColumn allowsSorting key="email">
+                        <TableColumn allowsSorting key="englishAddress">
                             Address
                         </TableColumn>
-                        <TableColumn allowsSorting key="email">
+                        <TableColumn allowsSorting key="region">
                             region
                         </TableColumn>
-                        <TableColumn allowsSorting key="englishName">
+                        <TableColumn allowsSorting key="startDateTime">
                             StartDateTime
                         </TableColumn>
-                        <TableColumn allowsSorting key="englishSurname">
-                            EndDateTime
+                        <TableColumn allowsSorting key="completionDateTime">
+                            CompletionDateTime
                         </TableColumn>
-                        <TableColumn allowsSorting key="chineseName">
+                        <TableColumn allowsSorting key="reservePrice">
                             Reserve Price
                         </TableColumn>
                         <TableColumn allowsSorting key="chineseName">
                             Current Price
                         </TableColumn>
-                        <TableColumn allowsSorting key="chineseSurname">
+                        <TableColumn allowsSorting key="startingPrice">
                             StartingPrice
                         </TableColumn>
                         <TableColumn allowsSorting key="phone">
@@ -168,11 +168,11 @@ export default function Page() {
                     <TableBody className="relative min-h-24" loadingContent={<Spinner label="Loading..." />} isLoading={mutation.isPending}>
                         {list.map((property) => (
                             <TableRow key={property._id}>
-                                <TableCell>{property.title}</TableCell>
-                                <TableCell>{property.address}</TableCell>
-                                <TableCell>{property.region}</TableCell>
+                                <TableCell>{property.englishTitle}</TableCell>
+                                <TableCell>{property.englishAddress}</TableCell>
+                                <TableCell>{property.regionDes.englishRegion}</TableCell>
                                 <TableCell>{dayjs(property.startDateTime).format("YYYY-MM-DD")}</TableCell>
-                                <TableCell>{dayjs(property.endDateTime).format("YYYY-MM-DD")}</TableCell>
+                                <TableCell>{dayjs(property.completionDateTime).format("YYYY-MM-DD")}</TableCell>
                                 <TableCell>{property.reservePrice}</TableCell>
                                 <TableCell>{property.currentPrice}</TableCell>
                                 <TableCell>{property.startingPrice.toLocaleString()}</TableCell>

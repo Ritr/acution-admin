@@ -1,6 +1,37 @@
-import connectMongo from '@/lib/connect-mongo';
-import Property from '@/models/property';
-import { NextResponse } from 'next/server';
+import connectMongo from "@/lib/connect-mongo";
+import Property from "@/models/property";
+import { NextResponse } from "next/server";
+import json from "@/utils/propertyDic";
+const getRegionText = (region1, region2, region3) => {
+    let regionDes = {
+        traditionalChineseRegion: "",
+        simplifiedChineseRegion: "",
+        englishRegion: ""
+    };
+    let region = json.region.find((item) => item.value === region1);
+    if (region) {
+        regionDes.traditionalChineseRegion += region.label1;
+        regionDes.simplifiedChineseRegion += region.label2;
+        regionDes.englishRegion += region.label3;
+        if (region2) {
+            let region2Item = region.children.find((item) => item.value === region2);
+            if (region2Item) {
+                regionDes.traditionalChineseRegion += `---${region2Item.label1}`;
+                regionDes.simplifiedChineseRegion += `---${region2Item.label2}`;
+                regionDes.englishRegion += `---${region2Item.label3}`;
+                if (region3) {
+                    let region3Item = region2Item.children.find((item) => item.value === region3);
+                    if (region3Item) {
+                        regionDes.traditionalChineseRegion += `---${region3Item.label1}`;
+                        regionDes.simplifiedChineseRegion += `---${region3Item.label2}`;
+                        regionDes.englishRegion += `---${region3Item.label3}`;
+                    }
+                }
+            }
+        }
+    }
+    return regionDes;
+}
 export async function GET(request) {
     const { searchParams } = request.nextUrl;
     const page = searchParams.get("page");
@@ -14,29 +45,36 @@ export async function GET(request) {
             ? {
                 deleted: false,
                 $or: [
-                    { name: { $regex: searchQuery, $options: 'i' } },
-                    { email: { $regex: searchQuery, $options: 'i' } },
-                    { phone: { $regex: searchQuery, $options: 'i' } },
+                    { name: { $regex: searchQuery, $options: "i" } },
+                    { email: { $regex: searchQuery, $options: "i" } },
+                    { phone: { $regex: searchQuery, $options: "i" } },
                 ],
             }
             : { deleted: false };
         const properties = await Property.find(query)
             .sort({ [sortField]: sortOrder * 1 })
             .skip((page - 1) * limit)
-            .limit(limit);
+            .limit(limit)
+            .lean();
         // 根据时间判断，如果是撤回、禁止之类的状态，就跳过
-        properties.map(item => {
-            if (new Date(item.endDateTime) <= new Date()) {
+        const result = properties.map(item => {
+            console.log(new Date(item.completionDateTime));
+            console.log(new Date());
+            console.log(new Date(item.completionDateTime) >= new Date());
+            // console.log(new Date(item.startDateTime) <= new Date());
+            if (new Date(item.completionDateTime) <= new Date()) {
                 item.status = "Completed";
-            } else if (new Date(item.startDateTime) >= new Date()) {
-                item.status = "AboutToStart";
-            } else {
+            } else if (new Date(item.completionDateTime) >= new Date() && new Date(item.startDateTime) <= new Date()) {
                 item.status = "InProgress";
+            } else {
+                item.status = "AboutToStart";
             }
+            return { ...item, regionDes: getRegionText(item.region1, item.region2, item.region3) }
         });
         const totalCount = await Property.countDocuments(query);
-        return NextResponse.json({ properties, totalCount });
+        return NextResponse.json({ properties: result, totalCount });
     } catch (error) {
+        console.log(error);
         return NextResponse.json({ error });
     }
 }

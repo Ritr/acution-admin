@@ -5,11 +5,11 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useEffect, useState, useRef, useLayoutEffect } from "react";
 import Upload from "@/app/ui/upload";
-import json from "../dic";
+import json from "../../../../utils/propertyDic";
 import { useForm, Controller } from "react-hook-form";
 import { parseDate, parseAbsoluteToLocal } from "@internationalized/date";
 
-export default function Page({ onOk, defaultProperty = {},loading }) {
+export default function Page({ onOk, defaultProperty, loading }) {
     const [render, setRender] = useState(false);
     const { register, handleSubmit, control, formState, reset, watch } = useForm({
         defaultValues: defaultProperty ? {
@@ -22,14 +22,14 @@ export default function Page({ onOk, defaultProperty = {},loading }) {
     const [regionList1, setRegionList1] = useState(json.region);
     const [regionList2, setRegionList2] = useState([]);
     const [regionList3, setRegionList3] = useState([]);
-    const [region1, setRegion1] = useState(defaultProperty.region1);
-    const [region2, setRegion2] = useState(defaultProperty.region2);
-    const [region3, setRegion3] = useState(defaultProperty.region3);
+    const [region1, setRegion1] = useState(defaultProperty ? defaultProperty.region1 : null);
+    const [region2, setRegion2] = useState(defaultProperty ? defaultProperty.region2 : null);
+    const [region3, setRegion3] = useState(defaultProperty ? defaultProperty.region3 : null);
 
     const [propertyTypeList1, setPropertyTypeList1] = useState(json.propertyType);
     const [propertyTypeList2, setPropertyTypeList2] = useState([]);
-    const [propertyType1, setPropertyType1] = useState(defaultProperty.propertyType1);
-    const [propertyType2, setPropertyType2] = useState(defaultProperty.propertyType2);
+    const [propertyType1, setPropertyType1] = useState(defaultProperty ? defaultProperty.propertyType1 : null);
+    const [propertyType2, setPropertyType2] = useState(defaultProperty ? defaultProperty.propertyType2 : null);
 
     const onSubmit = (data) => {
         const params = { ...data };
@@ -241,7 +241,7 @@ export default function Page({ onOk, defaultProperty = {},loading }) {
                             <Upload
                                 maxFiles={1}
                                 {...field}
-                                defaultValue={[formState.defaultValues.coverImage]}
+                                defaultValue={formState.defaultValues.coverImage ? [formState.defaultValues.coverImage] : null}
                                 onChange={(arr) => field.onChange(arr ? arr[0] : null)}>
                             </Upload>
                         )}>
@@ -254,7 +254,7 @@ export default function Page({ onOk, defaultProperty = {},loading }) {
                         name="otherImages"
                         control={control}
                         render={({ field }) => (
-                            <Upload maxFiles={4} {...field} defaultValue={formState.defaultValues.otherImages} />
+                            <Upload maxFiles={4} {...field} defaultValue={formState.defaultValues.otherImages ? formState.defaultValues.otherImages : null} />
                         )}>
 
                     </Controller>
@@ -286,15 +286,15 @@ export default function Page({ onOk, defaultProperty = {},loading }) {
                 </div>
                 <div className="pb-2">
                     <Label htmlFor="bidIncrement">Bid increment</Label>
-                    <Input title="only number" pattern="[0-9]*" id="bidIncrement" name="bidIncrement" {...register("startingPrice")} placeholder="Bid increment" required />
+                    <Input title="only number" pattern="[0-9]*" id="bidIncrement" name="bidIncrement" {...register("bidIncrement")} placeholder="Bid increment" required />
                 </div>
                 <div className="pb-2">
                     <Label htmlFor="evaluationPrice">Evaluation price</Label>
-                    <Input title="only number" pattern="[0-9]*" id="evaluationPrice" name="evaluationPrice" {...register("startingPrice")} placeholder="Evaluation price" required />
+                    <Input title="only number" pattern="[0-9]*" id="evaluationPrice" name="evaluationPrice" {...register("evaluationPrice")} placeholder="Evaluation price" required />
                 </div>
                 <div className="pb-2">
                     <Label htmlFor="ReservePrice">Reserve price</Label>
-                    <Input title="only number" pattern="[0-9]*" id="reservePrice" name="reservePrice" {...register("startingPrice")} placeholder="Reserve price" required />
+                    <Input title="only number" pattern="[0-9]*" id="reservePrice" name="reservePrice" {...register("reservePrice")} placeholder="Reserve price" required />
                 </div>
                 <div className="pb-2">
                     <Label>File upload</Label>
@@ -302,7 +302,7 @@ export default function Page({ onOk, defaultProperty = {},loading }) {
                         name="files"
                         control={control}
                         render={({ field }) => (
-                            <Upload maxFiles={4} {...field} defaultValue={formState.defaultValues.files} />
+                            <Upload maxFiles={4} {...field} defaultValue={formState.defaultValues.files ? formState.defaultValues.files : null} />
                         )}>
                     </Controller>
                 </div>
