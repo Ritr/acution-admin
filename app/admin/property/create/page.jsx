@@ -8,45 +8,26 @@ import Form from "../ui/form";
 export default function Page() {
     const mutation = useMutation({
         mutationFn: (data) => {
-            return fetch("/api/member", {
+            return fetch("/api/property", {
                 method: "POST",
                 body: JSON.stringify(data),
             });
         },
     });
-    const handleFinishUpload = (e) => {
-        console.log(e);
-    }
-    const updateFiles = (e) => {
-        console.log(e);
-        setFiles(e);
-    }
-    const removeFile = (e) => {
-        console.log(e);
-    }
-    const [files, setFiles] = useState([]);
-
-    const handleSubmit = async (event) => {
-
-        // mutation.mutate({
-        //     email,
-        //     countryAndRegion,
-        //     code,
-        //     phone,
-        //     englishName,
-        //     englishSurname,
-        //     chineseName,
-        //     chineseSurname,
-        //     password,
-        //     status,
-        //     promotion: promotion === "1" ? true : false,
-        //     reasonForBanning
-        // });
+    const handleSubmit = async (params) => {
+        mutation.mutate(params);
     };
     useEffect(() => {
         if (mutation.isSuccess) {
             mutation.data.json().then((res) => {
-                toast.success(res.msg);
+                if (res.error) {
+                    toast.error(res.error);
+                } else {
+                    toast.success(res.msg);
+                    setTimeout(() => {
+                        window.location.href = "/admin/property"
+                    }, 1000);
+                }
             });
         }
         if (mutation.isError) {
@@ -58,7 +39,7 @@ export default function Page() {
     return (
         <div>
             <ToastContainer autoClose={2000} position="top-center" />
-            <Form></Form>
+            <Form onOk={handleSubmit} loading={mutation.isPending}></Form>
         </div>
     )
 }

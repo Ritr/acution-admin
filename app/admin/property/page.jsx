@@ -192,7 +192,7 @@ export default function Page() {
                                 </TableCell>
                                 <TableCell>
                                     <Button variant="outline" className="mr-2 py-1 px-2 text-xs h-7">
-                                        <a href={"/admin/member/" + property._id} className="w-full">Edit</a>
+                                        <a href={"/admin/property/" + property._id} className="w-full">Edit</a>
                                     </Button>
                                     <AlertDialog>
                                         <AlertDialogTrigger>

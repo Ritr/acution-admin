@@ -1,11 +1,11 @@
 import connectMongo from '@/lib/connect-mongo';
-import User from '@/models/user';
+import Property from '@/models/property';
 import UI from "./ui";
 const Page = async ({ params }) => {
     await connectMongo();
-    const account = await User.findOne({ _id: params.id });
+    const property = await Property.findOne({ _id: params.id });
     return (
-        <UI defaultMember={JSON.parse(JSON.stringify(account))}></UI>
+        <UI defaultProperty={JSON.parse(JSON.stringify(property))}></UI>
     );
 };
 export default Page;

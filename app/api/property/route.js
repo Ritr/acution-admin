@@ -12,14 +12,14 @@ export async function GET(request) {
         await connectMongo();
         const query = searchQuery
             ? {
-                deleted:false,
+                deleted: false,
                 $or: [
                     { name: { $regex: searchQuery, $options: 'i' } },
                     { email: { $regex: searchQuery, $options: 'i' } },
                     { phone: { $regex: searchQuery, $options: 'i' } },
                 ],
             }
-            : {deleted:false};
+            : { deleted: false };
         const properties = await Property.find(query)
             .sort({ [sortField]: sortOrder * 1 })
             .skip((page - 1) * limit)
@@ -41,38 +41,8 @@ export async function GET(request) {
     }
 }
 export async function POST(request) {
-    const {
-        email,
-        countryAndRegion,
-        code,
-        phone,
-        englishName,
-        englishSurname,
-        chineseName,
-        chineseSurname,
-        password,
-        address,
-        financialProof,
-        status,
-        promotion,
-        reasonForBanning
-    } = await request.json();
-    const account = new Property({
-        email,
-        countryAndRegion,
-        code,
-        phone,
-        englishName,
-        englishSurname,
-        chineseName,
-        chineseSurname,
-        password,
-        address,
-        financialProof,
-        status,
-        promotion,
-        reasonForBanning
-    });
+    const params = await request.json();
+    const account = new Property(params);
     try {
         await connectMongo();
         await account.save();

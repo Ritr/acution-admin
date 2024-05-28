@@ -3,89 +3,95 @@ import { Tabs, Tab, Button, DatePicker, Select, SelectItem, } from "@nextui-org/
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useLayoutEffect } from "react";
 import Upload from "@/app/ui/upload";
 import json from "../dic";
 import { useForm, Controller } from "react-hook-form";
 import { parseDate, parseAbsoluteToLocal } from "@internationalized/date";
 
-export default function Page() {
-    const { register, handleSubmit, control } = useForm({
-        defaultValues: {
-            startDateTime: parseAbsoluteToLocal("2021-04-07T12:22:22Z")
-        },
+export default function Page({ onOk, defaultProperty = {},loading }) {
+    const [render, setRender] = useState(false);
+    const { register, handleSubmit, control, formState, reset, watch } = useForm({
+        defaultValues: defaultProperty ? {
+            ...defaultProperty,
+            startDateTime: parseAbsoluteToLocal(defaultProperty.startDateTime),
+            completionDateTime: parseAbsoluteToLocal(defaultProperty.completionDateTime),
+        } : {},
     });
-
 
     const [regionList1, setRegionList1] = useState(json.region);
     const [regionList2, setRegionList2] = useState([]);
     const [regionList3, setRegionList3] = useState([]);
-    const [region1, setRegion1] = useState();
-    const [region2, setRegion2] = useState();
-    const [region3, setRegion3] = useState();
+    const [region1, setRegion1] = useState(defaultProperty.region1);
+    const [region2, setRegion2] = useState(defaultProperty.region2);
+    const [region3, setRegion3] = useState(defaultProperty.region3);
 
     const [propertyTypeList1, setPropertyTypeList1] = useState(json.propertyType);
     const [propertyTypeList2, setPropertyTypeList2] = useState([]);
-    const [propertyType1, setPropertyType1] = useState();
-    const [propertyType2, setPropertyType2] = useState();
+    const [propertyType1, setPropertyType1] = useState(defaultProperty.propertyType1);
+    const [propertyType2, setPropertyType2] = useState(defaultProperty.propertyType2);
 
-    const [coverImage, setCoverImage] = useState(null);
-    const [otherImages, setOtherImages] = useState(null);
-    const [files, setFiles] = useState(null);
     const onSubmit = (data) => {
         const params = { ...data };
-        params.startDateTime = data.startDateTime.toAbsoluteString();
-        params.completionDateTime = data.completionDateTime.toAbsoluteString();
+        params.startDateTime = data.startDateTime.toDate().toISOString();
+        params.completionDateTime = data.completionDateTime.toDate().toISOString();
+        // debugger;
         params.region = region3;
-        params.region1 = region1;
-        params.region2 = region2;
-        params.region3 = region3;
         params.propertyType = propertyType2 || propertyType1;
-        params.propertyType1 = propertyType1;
-        params.propertyType2 = propertyType2;
-        params.coverImage = coverImage;
-        params.otherImages = otherImages;
-        params.files = files;
+        delete params._id;
+        delete params.__v;
+        onOk(params);
     };
     useEffect(() => {
         if (region1) {
-            setRegion2(null);
+            if (render) {
+                setRegion2(null);
+                setRegionList2([]);
+            }
             const region = regionList1.find(item => {
                 return item.value === region1;
             });
-            console.log(region);
-            setRegionList2(region.children);
+            if (region) {
+                setRegionList2(region.children);
+            }
         }
     }, [region1, regionList1]);
 
     useEffect(() => {
         if (region2) {
-            setRegion3(null);
+            if (render) {
+                setRegionList3([]);
+                setRegion3(null);
+            }
             const region = regionList2.find(item => {
                 return item.value === region2;
             });
-            setRegionList3(region.children);
+            if (region) {
+                setRegionList3(region.children);
+            }
         }
     }, [region2, regionList2]);
 
     useEffect(() => {
         if (propertyType1) {
-            setPropertyType2(null);
+            if (render) {
+                setPropertyType2(null);
+            }
             const propertyType = propertyTypeList1.find(item => {
                 return item.value === propertyType1;
             });
             setPropertyTypeList2(propertyType.children || []);
         }
     }, [propertyType1, propertyTypeList1]);
-    // const handleSubmit = async (event) => {
-    //     event.preventDefault();
-    //     // const region = region3;
-    //     // const propertyType = propertyType2 || propertyType1;
-    // };
+    useLayoutEffect(() => {
+        setTimeout(() => {
+            setRender(true);
+        }, 1000);
+    }, []);
     return (
         <div>
+            {/* {JSON.stringify(defaultProperty)} */}
             <form action="" onSubmit={handleSubmit(onSubmit)}>
-
                 <Tabs className="w-full [&>div]:w-full">
                     <Tab key="TraditionalChines" title="Traditional Chinese">
                         <div className="pb-2">
@@ -161,17 +167,17 @@ export default function Page() {
                 <div className="pb-2">
                     <Label>Region</Label>
                     <div className=" w-full flex gap-4">
-                        <Select isRequired selectedKeys={[region1]} items={regionList1} onChange={e => {
+                        <Select isRequired defaultSelectedKeys={[region1]} items={regionList1} onChange={e => {
                             setRegion1(e.target.value);
                         }}>
                             {(region) => <SelectItem key={region.value} value={region.value}>{region.label3}</SelectItem>}
                         </Select>
-                        <Select isRequired items={regionList2} onChange={e => {
+                        <Select isRequired defaultSelectedKeys={[region2]} items={regionList2} onChange={e => {
                             setRegion2(e.target.value);
                         }}>
                             {(region) => <SelectItem key={region.value}>{region.label3}</SelectItem>}
                         </Select>
-                        <Select isRequired items={regionList3} onChange={e => {
+                        <Select isRequired defaultSelectedKeys={[region3]} items={regionList3} onChange={e => {
                             setRegion3(e.target.value);
                         }}>
                             {(region) => <SelectItem key={region.value}>{region.label3}</SelectItem>}
@@ -181,13 +187,13 @@ export default function Page() {
                 <div className="pb-2">
                     <Label>Property type</Label>
                     <div className=" w-full flex gap-4">
-                        <Select isRequired items={propertyTypeList1} onChange={e => {
+                        <Select isRequired items={propertyTypeList1} defaultSelectedKeys={[propertyType1]} onChange={e => {
                             setPropertyType1(e.target.value);
                         }}>
                             {(propertyType) => <SelectItem key={propertyType.value}>{propertyType.label3}</SelectItem>}
                         </Select>
 
-                        <Select isRequired items={propertyTypeList2} onChange={e => {
+                        <Select isRequired items={propertyTypeList2} defaultSelectedKeys={[propertyType2]} onChange={e => {
                             setPropertyType2(e.target.value);
                         }}>
                             {(propertyType) => <SelectItem key={propertyType.value}>{propertyType.label3}</SelectItem>}
@@ -227,22 +233,32 @@ export default function Page() {
                 </div>
                 <div className="pb-2">
                     <Label>Cover image</Label>
-                    {JSON.stringify(coverImage)}
-                    <Upload maxFiles={1} onChange={arr => {
-                        if (arr) {
-                            setCoverImage(arr[0]);
-                        } else {
-                            setCoverImage(null);
-                        }
 
-                    }} />
+                    <Controller
+                        name="coverImage"
+                        control={control}
+                        render={({ field }) => (
+                            <Upload
+                                maxFiles={1}
+                                {...field}
+                                defaultValue={[formState.defaultValues.coverImage]}
+                                onChange={(arr) => field.onChange(arr ? arr[0] : null)}>
+                            </Upload>
+                        )}>
+
+                    </Controller>
                 </div>
                 <div className="pb-2">
                     <Label>Other images</Label>
-                    <Upload maxFiles={4} onChange={arr => {
-                        setOtherImages(arr);
+                    <Controller
+                        name="otherImages"
+                        control={control}
+                        render={({ field }) => (
+                            <Upload maxFiles={4} {...field} defaultValue={formState.defaultValues.otherImages} />
+                        )}>
 
-                    }} />
+                    </Controller>
+
                 </div>
                 <div className="pb-2">
                     <Label htmlFor="startDateTime">Start datetime</Label>
@@ -282,10 +298,13 @@ export default function Page() {
                 </div>
                 <div className="pb-2">
                     <Label>File upload</Label>
-                    <Upload maxFiles={4} onChange={arr => {
-                        setFiles(arr);
-
-                    }} />
+                    <Controller
+                        name="files"
+                        control={control}
+                        render={({ field }) => (
+                            <Upload maxFiles={4} {...field} defaultValue={formState.defaultValues.files} />
+                        )}>
+                    </Controller>
                 </div>
                 <div className="pb-2">
                     <Label>Broker&apos;s  phone number</Label>
@@ -317,7 +336,7 @@ export default function Page() {
                     <Input id="practicalUnitPrice" name="practicalUnitPrice" placeholder="Practical unitPrice" {...register("practicalUnitPrice")} required />
                 </div>
                 <div>
-                    <Button className="w-full" color="primary" type="submit">Submit</Button>
+                    <Button className="w-full" color="primary" type="submit" loading={loading}>Submit</Button>
                 </div>
             </form>
         </div>

@@ -11,39 +11,7 @@ import {
 import { useEffect, useState } from "react";
 
 
-export default function AdvancedDropzoneDemo({ defaultFiles, maxFiles = 3, onChange }) {
-    // const sampleFileProps = {
-    //     id: ":0:",
-    //     size: 28 * 1024 * 1024,
-    //     type: "text/plain",
-    //     name: "file created from props.jsx",
-    //   };
-    const sampleFileProps = {
-        id: 18,
-        name: "hover.png",
-        size: 6772,
-        type: "image/png",
-        uploadStatus: "success",
-        imageUrl: "https://auction-1311516012.cos.ap-beijing.myqcloud.com/hover.png",
-        valid: true,
-        file: {
-            name: "hover.png",
-            size: 6772,
-            type: "image/png",
-        }
-    };
-
-    // const sampleFileProps =[
-    //     {
-    //         "id": 5,
-    //         "file": {},
-    //         "name": "kk.png",
-    //         "size": 9922,
-    //         "type": "image/png",
-    //         "valid": true,
-    //         "xhr": {}
-    //     }
-    // ]
+export default function AdvancedDropzoneDemo({ defaultValue = [], maxFiles = 3, onChange }) {
     const [extFiles, setExtFiles] = useState([]);
     const [imageSrc, setImageSrc] = useState();
     const [videoSrc, setVideoSrc] = useState();
@@ -70,32 +38,16 @@ export default function AdvancedDropzoneDemo({ defaultFiles, maxFiles = 3, onCha
         const files = [...extFiles];
         uploadedFiles.map(item => {
             if (item.serverResponse.payload.message === "success") {
-                //item.id 标识符
-                // item.serverResponse.payload 返回值
-                // item.serverResponse.payload.url 图片地址
-                // item.imageUrl = item.serverResponse.payload.url;
                 files.map((ef) => {
                     if (ef.id === item.id) {
                         ef.imageUrl = item.serverResponse.payload.url;
                         ef.uploadStatus = "success";
                     }
                 })
-                // onUploadFinish(files.map(item => {
-                //     return {
-                //         id: item.id,
-                //         imageUrl: item.imageUrl,
-                //         name: item.nam,
-                //         size: item.size,
-                //         type: item.type,
-                //         uploadStatus: "success"
-                //     }
-                // }));
             }
         });
         setExtFiles(files);
-    };
-    useEffect(() => {
-        onChange && onChange(extFiles.map(item => {
+        let files2 = files.map(item => {
             if (item.uploadStatus == "success") {
                 return {
                     id: item.id,
@@ -103,14 +55,20 @@ export default function AdvancedDropzoneDemo({ defaultFiles, maxFiles = 3, onCha
                     name: item.nam,
                     size: item.size,
                     type: item.type,
-                    uploadStatus: "success"
+                    uploadStatus: "success",
+                    valid: true
                 }
             }
-        }));
-    }, [extFiles])
+        })
+        console.log("files2", files2);
+        onChange(files2);
+    };
     useEffect(() => {
-        setExtFiles([sampleFileProps]);
-    }, [])
+        if (!defaultValue) {
+            return;
+        }
+        setExtFiles(defaultValue);
+    }, [defaultValue])
     return (
         <>
             <Dropzone
@@ -130,7 +88,7 @@ export default function AdvancedDropzoneDemo({ defaultFiles, maxFiles = 3, onCha
                     uploadButton: {},
                 }}
             >
-                {extFiles.map((file) => (
+                {extFiles ? extFiles.map((file) => (
                     <FileMosaic
                         {...file}
                         key={file.id}
@@ -141,7 +99,7 @@ export default function AdvancedDropzoneDemo({ defaultFiles, maxFiles = 3, onCha
                         smartImgFit="center"
                         preview
                     />
-                ))}
+                )) : null}
             </Dropzone>
             {
                 imageSrc &&
