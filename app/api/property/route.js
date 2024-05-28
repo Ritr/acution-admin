@@ -45,9 +45,10 @@ export async function GET(request) {
             ? {
                 deleted: false,
                 $or: [
-                    { name: { $regex: searchQuery, $options: "i" } },
-                    { email: { $regex: searchQuery, $options: "i" } },
-                    { phone: { $regex: searchQuery, $options: "i" } },
+                    { region1: { $regex: searchQuery, $options: "i" } },
+                    { region2: { $regex: searchQuery, $options: "i" } },
+                    { region3: { $regex: searchQuery, $options: "i" } },
+                    { englishAddress: { $regex: searchQuery, $options: "i" } },
                 ],
             }
             : { deleted: false };
