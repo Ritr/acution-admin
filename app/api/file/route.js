@@ -15,9 +15,9 @@ export async function POST(request) {
     }
     const buffer = Buffer.from(await file.arrayBuffer());
     const data = await cos.putObject({
-        Bucket: 'auction-1311516012', // 必须
-        Region: 'ap-beijing',     // 存储桶所在地域，必须字段
-        Key: file.name,              // 必须
+        Bucket: 'test-1326029844', // 必须
+        Region: 'ap-hongkong',     // 存储桶所在地域，必须字段
+        Key: new Date().getTime() + file.name,              // 必须
         StorageClass: 'STANDARD',
         Body: buffer, // 上传文件对象
         onProgress: function (progressData) {

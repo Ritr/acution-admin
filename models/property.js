@@ -61,7 +61,7 @@ const PropertySchema = new Schema(
         otherImages: Array,
         files: Array,
         reservePrice: String,// 底價/保留價：reserve price(不在前端顯示，但拍賣价結束時未到這個價位即流拍)
-        evaluatedPrice: String,
+        evaluationPrice: String,
         brokerPhoneNumber: String,
         brokerEmail: String,
         brokerWeChat: String,

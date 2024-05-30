@@ -9,23 +9,60 @@ import { model, models, Schema } from 'mongoose';
 const CarParkSchema = new Schema(
     {
         landUse: String,
-        type: String,
-        region: String,
         environment:String,
+        type:String,
+        region: String,
+        region1: String,
+        region2: String,
+        region3: String,
         status: String,
         title: String,
+        traditionalChineseTitle: String,
+        traditionalChineseAddress: String,
+        BrokerTraditionalChineseName: String,
+        traditionalChineseContent: String,
+        traditionalChinesePriceList: String,
+
+        simplifiedChineseTitle: String,
+        simplifiedChineseAddress: String,
+        BrokerSimplifiedChineseName: String,
+        simplifiedChineseContent: String,
+        simplifiedChinesePriceList: String,
+
+        englishTitle: String,
+        englishAddress: String,
+        brokerEnglishName: String,
+        englishContent: String,
+        englishPriceList: String,
+
         address: String,
         startingPrice: Number,
         bidIncrement: Number,
         content: String,
-        startDateTime:Date,
-        endDateTime:Date,
-        mainImage:String,
-        images:Array,
+        age: Number,
+        startDateTime: Date,
+        completionDateTime: Date,
+        coverImage: Object,
+        otherImages: Array,
+        files: Array,
+        reservePrice: String,// 底價/保留價：reserve price(不在前端顯示，但拍賣价結束時未到這個價位即流拍)
+        evaluationPrice: String,
+        brokerPhoneNumber: String,
+        brokerEmail: String,
+        brokerWeChat: String,
+        deleted: {
+            type: Boolean,
+            default: false
+        },
         createdAt: {
             type: Date,
             default: Date.now,
         },
+        latestBid: {
+            type: Schema.Types.ObjectId,
+            ref: 'Bid',
+            // 可选:添加getter和setter方法,用于控制latestBid的读写逻辑
+        }
     }
 );
 const CarPark = models.CarPark || model('CarPark', CarParkSchema, 'carparks');

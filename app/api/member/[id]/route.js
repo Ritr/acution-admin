@@ -49,7 +49,7 @@ export async function PUT(request, { params }) {
         }
         return NextResponse.json({ msg: "save success" });
     } else {
-        return NextResponse.json({ error: "no account" });
+        return NextResponse.json({ error: "no member" });
     }
 }
 export async function DELETE(request, { params }) {
