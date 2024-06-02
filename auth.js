@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import connectMongo from "@/lib/connect-mongo";
-import User from "@/models/user";
+import Account from "@/models/account";
 import {
     AuthError
 } from "next-auth";
@@ -17,7 +17,7 @@ export const {
     providers: [
         Credentials({
             // You can specify which fields should be submitted, by adding keys to the `credentials` object.
-            // e.g. domain, username, password, 2FA token, etc.
+            // e.g. domain, accountname, password, 2FA token, etc.
             credentials: {
                 // email: {},
                 password: {},
@@ -26,41 +26,24 @@ export const {
             },
             authorize: async (credentials) => {
                 console.log(credentials);
-                let user = null;
+                let account = null;
                 await connectMongo();
-                if (credentials.type === "phone") {
-                    user = await User.findOne({
-                        phone: credentials.phone,
-                        code: credentials.code,
-                    });
-                    if (!user) {
-                        throw new AuthError("電話尚未注冊");
-                    }
-                    user = await User.findOne({
-                        phone: credentials.phone,
-                        code: credentials.code,
-                        password: credentials.password,
-                    });
-                    if (!user) {
-                        throw new AuthError("密碼錯誤");
-                    }
-                } else {
-                    user = await User.findOne({
-                        email: credentials.email
-                    });
-                    if (!user) {
-                        throw new AuthError("電郵尚未注冊");
-                    }
-                    user = await User.findOne({
-                        email: credentials.email,
-                        password: credentials.password,
-                    });
-                    if (!user) {
-                        throw new AuthError("密碼錯誤");
-                    }
+                account = await Account.findOne({
+                    email: credentials.email
+                });
+                if (!account) {
+                    throw new AuthError("Email not found");
+                }
+                account = await Account.findOne({
+                    email: credentials.email,
+                    password: credentials.password,
+                });
+                if (!account) {
+                    throw new AuthError("Password error");
                 }
 
-                return user;
+
+                return account;
             },
         }),
     ],
@@ -69,15 +52,15 @@ export const {
             session,
             token
         }) {
-            session.user = token.user;
+            session.account = token.account;
             return session;
         },
         async jwt({
             token,
-            user
+            account
         }) {
-            if (user) {
-                token.user = user;
+            if (account) {
+                token.account = account;
             }
             return token;
         },

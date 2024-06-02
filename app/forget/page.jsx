@@ -1,151 +1,134 @@
 // import { cookies } from "next/headers";
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
-import { Button } from "@/components/ui/button";
-import Link from 'next/link';
+import { Input, Button } from "@nextui-org/react";
+import { useForm } from "react-hook-form";
+import { useMutation } from "@tanstack/react-query";
 
 export default function RegisterPage() {
-    const router = useRouter();
-    const [registerStatus, setRegisterStatus] = useState({ success: false, error: null, loading: false });
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        const formData = new FormData(event.target);
-        const password = formData.get("password");
-        const password2 = formData.get("password2");
+    const { register, handleSubmit, formState, watch, reset } = useForm();
+    const [codeId, setCodeId] = useState(null);
+    const [seconds, setSeconds] = useState(61);
+    const [timer, setTimer] = useState(null);
+    const email = watch("email");
+    // 重置密码
+    const mutation = useMutation({
+        mutationFn: (data) => {
+            return fetch("/api/password", {
+                method: "POST",
+                body: JSON.stringify(data),
+            });
+        },
+    });
+    // 获取验证码
+    const codeMutation = useMutation({
+        mutationFn: (email) => {
+            return fetch("/api/validate?email=" + email);
+        },
+    });
+    const onSubmit = (data) => {
+        const password = data.password;
+        const password2 = data.password2;
         if (password !== password2) {
-            toast.warn("密碼不一致");
+            toast.warn("password not equals");
             return;
         }
-
-        setRegisterStatus({ success: false, error: null, loading: true });
-        const res = await fetch("/api/register", {
-            method: "POST",
-            body: formData
+        mutation.mutate({
+            password: password,
+            codeId: codeId,
+            code: data.code,
+            email: data.email,
         });
-        const data = await res.json();
-        if (data.error) {
-            setRegisterStatus({ success: false, error: data.error, loading: false });
-            return;
-        } else {
-            setRegisterStatus({ success: true, error: null, loading: false });
-        }
+
     };
-    useEffect(() => {
-        if (registerStatus.success) {
-            toast.success("注冊成功，前往登錄");
-            setTimeout(() => {
-                router.replace("/login")
-            }, 2000);
+    const count = () => {
+        let timer1 = setInterval(() => {
+            setSeconds((prevSeconds) => prevSeconds - 1);
+        }, 1000);
+        setTimer(timer1);
+    };
+    const getCode = () => {
+        if (!email) {
+            toast.error("Please input email");
+            return;
         }
-    }, [registerStatus]);
+        codeMutation.mutate(email);
+        setSeconds(60);
+        count();
+    }
+    useEffect(() => {
+        if (codeMutation.isSuccess && codeMutation.data.ok) {
+            codeMutation.data.json().then((res) => {
+                if (!res.error) {
+                    setCodeId(res.codeId);
+                } else {
+                    toast.error(res.error);
+                }
+            });
+        }
+        if (codeMutation.isError) {
+            toast.error(codeMutation.data);
+        }
+    }, [codeMutation.isPending, codeMutation.isSuccess, codeMutation.isError, codeMutation.data]);
+
+    useEffect(() => {
+        if (mutation.isSuccess && mutation.data.ok) {
+            mutation.data.json().then((res) => {
+                if (!res.error) {
+                    toast.success(res.msg);
+                    setTimeout(() => {
+                        location.replace("/login");
+                    }, 2000);
+                } else {
+                    toast.error(res.error);
+                }
+            });
+        }
+        if (mutation.isError) {
+            toast.error(mutation.data);
+        }
+    }, [mutation.isPending, mutation.isSuccess, mutation.isError, mutation.data]);
+    useEffect(() => {
+        if (seconds < 0) {
+            clearInterval(timer);
+            setSeconds(61);
+        }
+    }, [seconds]);
     return (
         <main className="flex items-center justify-center md:h-screen">
-            <ToastContainer autoClose={2000} position="top-center" />
+            <ToastContainer position="top-center" />
             <div className=" mx-auto flex w-full max-w-[600px] flex-col space-y-2.5 p-4 md:-mt-32">
-                <form onSubmit={handleSubmit} className="space-y-3">
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-60">
                     <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
-                        <h1 className={`mb-3 text-2xl`}>
-                            忘記密碼
+                        <h1 className={`text-2xl mb-12`}>
+                            Forget Password
                         </h1>
-                        <div className="w-full">
-                            <div>
-                                <label
-                                    className="mb-3 mt-5 block text-xs font-medium text-gray-900"
-                                    htmlFor="email"
-                                >
-                                    電郵
-                                </label>
-                                <div className="">
-                                    <input
-                                        className="peer block w-full rounded-md border border-gray-200 py-[9px] indent-2 text-sm outline-2 placeholder:text-gray-500"
-                                        id="email"
-                                        type="email"
-                                        name="email"
-                                        placeholder="請輸入電郵"
-                                        required
-                                    />
-                                </div>
-                                <div className="flex justify-between">
-                                    <Link href="/contactus" className="text-sm text-gray-500 mt-2">忘記電郵</Link>
-                                </div>
-                            </div>
-                            <div className="mt-4">
-                                <label
-                                    className="mb-3 mt-5 block text-xs font-medium text-gray-900"
-                                    htmlFor="password"
-                                >
-                                    驗證碼
-                                </label>
-                                <div className="flex gap-4">
-                                    <input
-                                        className="peer block w-full rounded-md border border-gray-200 py-[9px] indent-2 text-sm outline-2 placeholder:text-gray-500"
-                                        id="password"
-                                        type="password"
-                                        name="password"
-                                        placeholder="請輸入密碼"
-                                        required
-                                        minLength={6}
-                                    />
-                                    <Button className="bg-[#f0d300] text-black transition-all hover:bg-[#f0d300] hover:opacity-80">獲取驗證碼</Button>
-                                </div>
-                            </div>
-                            <div className="mt-4">
-                                <label
-                                    className="mb-3 mt-5 block text-xs font-medium text-gray-900"
-                                    htmlFor="password"
-                                >
-                                    密碼
-                                </label>
-                                <div className="">
-                                    <input
-                                        className="peer block w-full rounded-md border border-gray-200 py-[9px] indent-2 text-sm outline-2 placeholder:text-gray-500"
-                                        id="password"
-                                        type="password"
-                                        name="password"
-                                        placeholder="請輸入密碼"
-                                        required
-                                        minLength={6}
-                                    />
-                                </div>
-                            </div>
+                        <Input {...register("email")} className="w-full mb-6" labelPlacement="outside" placeholder="Please input email" variant="bordered" type="email" label="Email" isRequired>
 
-                            <div className="mt-4">
-                                <label
-                                    className="mb-3 mt-5 block text-xs font-medium text-gray-900"
-                                    htmlFor="password2"
-                                >
-                                    確認密碼
-                                </label>
-                                <div className="">
-                                    <input
-                                        className="peer block w-full rounded-md border border-gray-200 py-[9px] indent-2 text-sm outline-2 placeholder:text-gray-500"
-                                        id="password2"
-                                        type="password"
-                                        name="password2"
-                                        placeholder="請確認密碼"
-                                        required
-                                        minLength={6}
-                                    />
-                                </div>
+                        </Input>
+                        <div className="flex gap-4  mb-12">
+                            <Input {...register("code")} className="w-full flex" labelPlacement="outside" placeholder="Please input verification code" variant="bordered" label="Verification Code" isRequired>
+                            </Input>
+                            <div className="mt-6">
+                                {
+                                    seconds <= 60 ? (
+                                        <Button color="primary" disabled>{seconds} S</Button>
+
+                                    ) : (
+                                        <Button color="primary" onClick={getCode}>Get verification code</Button>
+                                    )
+                                }
                             </div>
                         </div>
-                        <Button className="mt-4 w-full bg-[#f0d300] text-black transition-all hover:bg-[#f0d300] hover:opacity-80" disabled={registerStatus.loading}>
-                            重置密碼
+                        <Input {...register("password")} {...register("password")} className="w-full mb-12" minLength={6} labelPlacement="outside" placeholder="Please input password" variant="bordered" label="Password" isRequired>
+                        </Input>
+                        <Input {...register("password2")} {...register("password2")} className="w-full mb-12" minLength={6} labelPlacement="outside" placeholder="Please input password" variant="bordered" label="Confirm password" isRequired>
+                        </Input>
+                        <Button type="submit" color="primary" className="w-full" isLoading={mutation.isPending}>
+                            Reset Password
                         </Button>
-                        <div
-                            className="flex h-8 items-end space-x-1"
-                            aria-live="polite"
-                            aria-atomic="true"
-                        >
-                            {registerStatus.error && (
-                                <>
-                                    {/* <ExclamationCircleIcon className="h-5 w-5 text-red-500" /> */}
-                                    <p className="text-sm text-red-500">{registerStatus.error}</p>
-                                </>
-                            )}
-                        </div>
                     </div>
                 </form>
             </div>

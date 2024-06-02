@@ -4,7 +4,7 @@ const resend = new Resend('re_HYPAb9fw_5dmWbvoSgeQJqDfe2EqMKS7e');
 export const sendEmail = (to, subject, text) => {
     console.log(to, subject, text);
     resend.emails.send({
-        from: 'hkauction-demo@ritr.site',
+        from: 'auction@ritr.site',
         to: to,
         subject: subject,
         text: text

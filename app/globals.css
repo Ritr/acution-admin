@@ -34,6 +34,7 @@
 
     --radius: 0.5rem;
     --nextui-radius-medium: 0.375rem !important;
+    --nextui-border-width-medium: 1px !important;
   }
 
   .dark {
@@ -67,7 +68,9 @@
 
     --nextui-radius-medium: 0.375rem !important;
 
+    --nextui-border-width-medium: 1px !important;
   }
+
 }
 
 @layer base {

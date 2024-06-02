@@ -25,7 +25,7 @@ export default function LoginForm() {
         }
     };
     useEffect(() => {
-        localStorage.url = new URLSearchParams(location.search).get('redirect') || "/home";
+        localStorage.url = new URLSearchParams(location.search).get('callbackUrl') || "/admin/property";
     }, []);
     useEffect(() => {
         if (loginStatus.success) {
@@ -43,7 +43,7 @@ export default function LoginForm() {
                                     className="mb-3 mt-5 block text-xs font-medium text-gray-900"
                                     htmlFor="email"
                                 >
-                                    電郵
+                                    Email
                                 </label>
                                 <div className="relative">
                                     <input
@@ -51,7 +51,7 @@ export default function LoginForm() {
                                         id="email"
                                         type="email"
                                         name="email"
-                                        placeholder="請輸入電郵"
+                                        placeholder="Please Input Email"
                                         required
                                     />
                                     <MdOutlineMailOutline className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
@@ -98,7 +98,7 @@ export default function LoginForm() {
                                 className="mb-3 mt-5 block text-xs font-medium text-gray-900"
                                 htmlFor="password"
                             >
-                                密碼
+                                Password
                             </label>
                             <div className="relative">
                                 <input
@@ -106,7 +106,7 @@ export default function LoginForm() {
                                     id="password"
                                     type="password"
                                     name="password"
-                                    placeholder="請輸入密碼"
+                                    placeholder="Please input password"
                                     required
                                     minLength={6}
                                 />
@@ -115,12 +115,12 @@ export default function LoginForm() {
                         </div>
                     </div>
                     <div className="flex justify-between">
-                        <Link href="/register" className="text-sm text-gray-500 mt-2">前往注冊</Link>
-                        <Link href="/forget" className="text-sm text-gray-500 mt-2">忘記密碼</Link>
+                        {/* <Link href="/register" className="text-sm text-gray-500 mt-2">前往注冊</Link> */}
+                        <Link href="/forget" className="text-sm text-gray-500 mt-2">Forget Password</Link>
                     </div>
 
                     <Button className="mt-4 w-full bg-[#f0d300] text-black transition-all hover:bg-[#f0d300] hover:opacity-80" disabled={loginStatus.loading}>
-                        開始拍賣
+                        Login
                         {/* <ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50" /> */}
                     </Button>
                     <div
@@ -140,10 +140,10 @@ export default function LoginForm() {
     }
     return (
         <Tabs defaultValue="email" className="w-full md:w-[400px]" onValueChange={value => { setType(value) }}>
-            <TabsList>
+            {/* <TabsList>
                 <TabsTrigger value="email">電郵登錄</TabsTrigger>
                 <TabsTrigger value="phone">電話登錄</TabsTrigger>
-            </TabsList>
+            </TabsList> */}
             <TabsContent value="email">
                 <LoginForm type="email"></LoginForm>
             </TabsContent>
