@@ -122,9 +122,9 @@ export default function RegisterPage() {
                                 }
                             </div>
                         </div>
-                        <Input {...register("password")} {...register("password")} className="w-full mb-12" minLength={6} labelPlacement="outside" placeholder="Please input password" variant="bordered" label="Password" isRequired>
+                        <Input {...register("password")} className="w-full mb-12" minLength={6} labelPlacement="outside" placeholder="Please input password" variant="bordered" label="Password" isRequired>
                         </Input>
-                        <Input {...register("password2")} {...register("password2")} className="w-full mb-12" minLength={6} labelPlacement="outside" placeholder="Please input password" variant="bordered" label="Confirm password" isRequired>
+                        <Input  {...register("password2")} className="w-full mb-12" minLength={6} labelPlacement="outside" placeholder="Please input password" variant="bordered" label="Confirm password" isRequired>
                         </Input>
                         <Button type="submit" color="primary" className="w-full" isLoading={mutation.isPending}>
                             Reset Password

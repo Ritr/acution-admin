@@ -1,8 +1,8 @@
 "use client";
-import { Tabs, Tab, Button, DatePicker, Select, SelectItem, } from "@nextui-org/react";
+import { Tabs, Tab, Button, DatePicker, Select, SelectItem, Textarea } from "@nextui-org/react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+// import { Textarea } from "@/components/ui/textarea";
 import { useEffect, useState, useRef, useLayoutEffect } from "react";
 import Upload from "@/app/ui/upload";
 import json from "../../../../utils/propertyDic";
@@ -36,8 +36,13 @@ export default function Page({ onOk, defaultProperty, loading }) {
         params.startDateTime = data.startDateTime.toDate().toISOString();
         params.completionDateTime = data.completionDateTime.toDate().toISOString();
         // debugger;
+        params.region1 = region1;
+        params.region2 = region2;
+        params.region3 = region3;
         params.region = region3;
         params.propertyType = propertyType2 || propertyType1;
+        params.propertyType1 = propertyType1;
+        params.propertyType2 = propertyType2;
         delete params._id;
         delete params.__v;
         onOk(params);
@@ -100,19 +105,15 @@ export default function Page({ onOk, defaultProperty, loading }) {
                         </div>
                         <div className="pb-2">
                             <Label htmlFor="traditionalChineseAddress">Traditional Chinese address</Label>
-                            <Textarea id="traditionalChineseAddress" name="traditionalChineseAddress" {...register("traditionalChineseAddress")} placeholder="Traditional Chinese address" required />
-                        </div>
-                        <div className="pb-2">
-                            <Label>Broker&apos;s traditional Chinese name</Label>
-                            <Input id="BrokerTraditionalChineseName" name="BrokerTraditionalChineseName" {...register("BrokerTraditionalChineseName")} placeholder="Broker&apos;s traditional Chinese name" required />
+                            <Textarea classNames={{ input: "resize-y" }} variant="bordered" minRows={5} id="traditionalChineseAddress" name="traditionalChineseAddress" {...register("traditionalChineseAddress")} placeholder="Traditional Chinese address" required />
                         </div>
                         <div className="pb-2">
                             <Label>Traditional Chinese content</Label>
-                            <Textarea id="traditionalChineseContent" name="traditionalChineseContent" {...register("traditionalChineseContent")} placeholder="Traditional Chinese content" required />
+                            <Textarea classNames={{ input: "resize-y" }} variant="bordered" minRows={5} id="traditionalChineseContent" name="traditionalChineseContent" {...register("traditionalChineseContent")} placeholder="Traditional Chinese content" required />
                         </div>
                         <div className="pb-2">
                             <Label>Traditional Chinese price list</Label>
-                            <Textarea id="traditionalChinesePriceList" name="traditionalChinesePriceList" {...register("traditionalChinesePriceList")} placeholder="Traditional Chinese price list" required />
+                            <Textarea classNames={{ input: "resize-y" }} variant="bordered" minRows={5} id="traditionalChinesePriceList" name="traditionalChinesePriceList" {...register("traditionalChinesePriceList")} placeholder="Traditional Chinese price list" required />
                         </div>
                     </Tab>
 
@@ -123,20 +124,15 @@ export default function Page({ onOk, defaultProperty, loading }) {
                         </div>
                         <div className="pb-2">
                             <Label htmlFor="password">Simplified Chinese address</Label>
-                            <Textarea id="simplifiedChineseAddress" name="simplifiedChineseAddress" {...register("simplifiedChineseAddress")} placeholder="Simplified Chinese address" required />
+                            <Textarea classNames={{ input: "resize-y" }} variant="bordered" minRows={5} id="simplifiedChineseAddress" name="simplifiedChineseAddress" {...register("simplifiedChineseAddress")} placeholder="Simplified Chinese address" required />
                         </div>
-                        <div className="pb-2">
-                            <Label>Broker&apos;s simplified Chinese name</Label>
-                            <Input id="BrokerSimplifiedChineseName" name="BrokerSimplifiedChineseName" {...register("BrokerSimplifiedChineseName")} placeholder="Broker&apos;s simplified Chinese name" required />
-                        </div>
-
                         <div className="pb-2">
                             <Label>simplified Chinese content</Label>
-                            <Textarea id="simplifiedChineseContent" name="simplifiedChineseContent" {...register("simplifiedChineseContent")} placeholder="simplified Chinese content" required />
+                            <Textarea classNames={{ input: "resize-y" }} variant="bordered" minRows={5} id="simplifiedChineseContent" name="simplifiedChineseContent" {...register("simplifiedChineseContent")} placeholder="simplified Chinese content" required />
                         </div>
                         <div className="pb-2">
                             <Label>simplified Chinese price list</Label>
-                            <Textarea id="simplifiedChinesePriceList" name="simplifiedChinesePriceList" {...register("simplifiedChinesePriceList")} placeholder="simplified Chinese price list" required />
+                            <Textarea classNames={{ input: "resize-y" }} variant="bordered" minRows={5} id="simplifiedChinesePriceList" name="simplifiedChinesePriceList" {...register("simplifiedChinesePriceList")} placeholder="simplified Chinese price list" required />
                         </div>
                     </Tab>
 
@@ -147,19 +143,15 @@ export default function Page({ onOk, defaultProperty, loading }) {
                         </div>
                         <div className="pb-2">
                             <Label htmlFor="englishAddress">English address</Label>
-                            <Textarea id="englishAddress" name="englishAddress" {...register("englishAddress")} placeholder="English address" required />
-                        </div>
-                        <div className="pb-2">
-                            <Label>Broker&apos;s English name</Label>
-                            <Input id="brokerEnglishName" name="brokerEnglishName" {...register("brokerEnglishName")} placeholder="Broker&apos;s English name" required />
+                            <Textarea classNames={{ input: "resize-y" }} variant="bordered" minRows={5} id="englishAddress" name="englishAddress" {...register("englishAddress")} placeholder="English address" required />
                         </div>
                         <div className="pb-2">
                             <Label>English content</Label>
-                            <Textarea id="englishContent" name="englishContent" {...register("englishContent")} placeholder="English content" required />
+                            <Textarea classNames={{ input: "resize-y" }} variant="bordered" minRows={5} id="englishContent" name="englishContent" {...register("englishContent")} placeholder="English content" required />
                         </div>
                         <div className="pb-2">
                             <Label>English price list</Label>
-                            <Textarea id="englishPriceList" name="englishPriceList" {...register("englishPriceList")} placeholder="English price list" required />
+                            <Textarea classNames={{ input: "resize-y" }} variant="bordered" minRows={5} id="englishPriceList" name="englishPriceList" {...register("englishPriceList")} placeholder="English price list" required />
                         </div>
                     </Tab>
                 </Tabs>
@@ -266,7 +258,7 @@ export default function Page({ onOk, defaultProperty, loading }) {
                         name="startDateTime"
                         control={control}
                         render={({ field }) => (
-                            <DatePicker hourCycle="24" hideTimeZone id="startDateTime" name="startDateTime" {...field} placeholder="Start dateTime" isRequired></DatePicker>
+                            <DatePicker granularity="minute" hourCycle="24" hideTimeZone id="startDateTime" name="startDateTime" {...field} placeholder="Start dateTime" isRequired></DatePicker>
                         )}
                     />
                 </div>
@@ -276,7 +268,7 @@ export default function Page({ onOk, defaultProperty, loading }) {
                         name="completionDateTime"
                         control={control}
                         render={({ field }) => (
-                            <DatePicker hourCycle="24" hideTimeZone id="completionDateTime" name="completionDateTime" {...field} placeholder="Completion dateTime" isRequired></DatePicker>
+                            <DatePicker granularity="minute" hourCycle="24" hideTimeZone id="completionDateTime" name="completionDateTime" {...field} placeholder="Completion dateTime" isRequired></DatePicker>
                         )}
                     />
                 </div>
@@ -302,9 +294,22 @@ export default function Page({ onOk, defaultProperty, loading }) {
                         name="files"
                         control={control}
                         render={({ field }) => (
-                            <Upload maxFiles={4} {...field} defaultValue={formState.defaultValues.files ? formState.defaultValues.files : null} />
+                            <Upload accept="image/*,.pdf" maxFiles={4} {...field} defaultValue={formState.defaultValues.files ? formState.defaultValues.files : null} />
                         )}>
                     </Controller>
+                </div>
+
+                <div className="pb-2">
+                    <Label>Broker&apos;s traditional Chinese name</Label>
+                    <Input id="brokerTraditionalChineseName" name="brokerTraditionalChineseName" {...register("brokerTraditionalChineseName")} placeholder="Broker&apos;s traditional Chinese name" required />
+                </div>
+                <div className="pb-2">
+                    <Label>Broker&apos;s simplified Chinese name</Label>
+                    <Input id="BrokerSimplifiedChineseName" name="BrokerSimplifiedChineseName" {...register("BrokerSimplifiedChineseName")} placeholder="Broker&apos;s simplified Chinese name" required />
+                </div>
+                <div className="pb-2">
+                    <Label>Broker&apos;s English name</Label>
+                    <Input id="brokerEnglishName" name="brokerEnglishName" {...register("brokerEnglishName")} placeholder="Broker&apos;s English name" required />
                 </div>
                 <div className="pb-2">
                     <Label>Broker&apos;s  phone number</Label>
@@ -322,19 +327,19 @@ export default function Page({ onOk, defaultProperty, loading }) {
                     <Label>Construction area</Label>
                     <Input id="constructionArea" name="constructionArea" placeholder="Construction area" {...register("constructionArea")} required />
                 </div>
-                <div className="pb-2">
+                {/* <div className="pb-2">
                     <Label>Construction unitPrice</Label>
                     <Input id="constructionUnitPrice" name="constructionUnitPrice" placeholder="Construction unitPrice" {...register("constructionUnitPrice")} required />
-                </div>
+                </div> */}
 
                 <div className="pb-2">
                     <Label>Practical area</Label>
                     <Input id="practicalArea" name="practicalArea" placeholder="Practical area" {...register("practicalArea")} required />
                 </div>
-                <div className="pb-2">
+                {/* <div className="pb-2">
                     <Label>Practical unitPrice</Label>
                     <Input id="practicalUnitPrice" name="practicalUnitPrice" placeholder="Practical unitPrice" {...register("practicalUnitPrice")} required />
-                </div>
+                </div> */}
                 <div>
                     <Button className="w-full" color="primary" type="submit" loading={loading}>Submit</Button>
                 </div>

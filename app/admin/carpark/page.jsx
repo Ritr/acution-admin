@@ -38,7 +38,7 @@ export default function Page() {
             // 创建一个临时链接并点击它来下载文件
             const downloadLink = document.createElement('a');
             downloadLink.setAttribute('href', URL.createObjectURL(blob));
-            downloadLink.setAttribute('download', 'properties.csv');
+            downloadLink.setAttribute('download', 'properties'+dayjs().format("YYYYMMDDHHmmss")+'.csv');
             document.body.appendChild(downloadLink);
             downloadLink.click();
             document.body.removeChild(downloadLink);

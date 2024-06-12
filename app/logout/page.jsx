@@ -2,7 +2,7 @@
 import { logOut } from "@/lib/actions";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
+import { Button } from "@nextui-org/react";
 
 
 export default function Page() {
@@ -34,11 +34,10 @@ export default function Page() {
       <div className="relative mx-auto flex w-full max-w-[400px] flex-col space-y-2.5 p-4 md:-mt-32">
         <p>Confirm Logout？</p>
         <form onSubmit={handleSubmit}>
-
-          <Button type="submit" className="mt-4 w-full  bg-[#f0d300] text-black transition-all hover:bg-[#f0d300] hover:opacity-80" disabled={logoutStatus.loading}>
+          <Button color="primary" type="submit" className="w-full" disabled={logoutStatus.loading}>
             Logout
           </Button>
-          <Button className="mt-4 w-full bg-gray-400 hover:bg-gray-400 hover:opacity-80" onClick={() => router.back()}>Cancel</Button>
+          <Button color="default" className="w-full mt-4" onClick={() => router.back()}>Cancel</Button>
         </form>
       </div>
     </main>

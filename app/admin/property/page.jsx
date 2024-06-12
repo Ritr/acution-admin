@@ -30,20 +30,20 @@ export default function Page() {
     const [sortDescriptor, setSortDescriptor] = useState();
     async function download() {
         try {
-            const response = await fetch('/api/property/download');
+            const response = await fetch("/api/property/download");
             const csvData = await response.text();
 
-            const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+            const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
 
             // 创建一个临时链接并点击它来下载文件
-            const downloadLink = document.createElement('a');
-            downloadLink.setAttribute('href', URL.createObjectURL(blob));
-            downloadLink.setAttribute('download', 'properties.csv');
+            const downloadLink = document.createElement("a");
+            downloadLink.setAttribute("href", URL.createObjectURL(blob));
+            downloadLink.setAttribute("download", "properties" + dayjs().format("YYYYMMDDHHmmss") + ".csv");
             document.body.appendChild(downloadLink);
             downloadLink.click();
             document.body.removeChild(downloadLink);
         } catch (error) {
-            console.error('Error downloading CSV:', error);
+            console.error("Error downloading CSV:", error);
         }
     }
     const mutation = useMutation({
@@ -70,7 +70,7 @@ export default function Page() {
         }
     }
     const getFileNameFromUrl = (url) => {
-        const pathParts = url.split('/');
+        const pathParts = url.split("/");
         return pathParts.pop();
     }
     useEffect(() => {
@@ -170,7 +170,7 @@ export default function Page() {
                             <TableRow key={property._id}>
                                 <TableCell>{property.englishTitle}</TableCell>
                                 <TableCell>{property.englishAddress}</TableCell>
-                                <TableCell>{property.regionDes.englishRegion}</TableCell>
+                                <TableCell>{property.regionDes.englishRegion.split("---").pop()}</TableCell>
                                 <TableCell>{dayjs(property.startDateTime).format("YYYY-MM-DD")}</TableCell>
                                 <TableCell>{dayjs(property.completionDateTime).format("YYYY-MM-DD")}</TableCell>
                                 <TableCell>{property.reservePrice}</TableCell>

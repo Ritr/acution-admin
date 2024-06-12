@@ -8,6 +8,7 @@ import {
     useMutation
 } from "@tanstack/react-query";
 import { ToastContainer, toast } from "react-toastify";
+import dayjs from "dayjs";
 export default function Page() {
     const [list, setList] = useState([]);
     // const [totalCount, setTotalCount] = useState(0);
@@ -17,20 +18,20 @@ export default function Page() {
     const [sortDescriptor, setSortDescriptor] = useState();
     async function download() {
         try {
-            const response = await fetch('/api/member/download');
+            const response = await fetch("/api/member/download");
             const csvData = await response.text();
 
-            const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+            const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
 
             // 创建一个临时链接并点击它来下载文件
-            const downloadLink = document.createElement('a');
-            downloadLink.setAttribute('href', URL.createObjectURL(blob));
-            downloadLink.setAttribute('download', 'users.csv');
+            const downloadLink = document.createElement("a");
+            downloadLink.setAttribute("href", URL.createObjectURL(blob));
+            downloadLink.setAttribute("download", "members" + dayjs().format("YYYYMMDDHHmmss") + ".csv");
             document.body.appendChild(downloadLink);
             downloadLink.click();
             document.body.removeChild(downloadLink);
         } catch (error) {
-            console.error('Error downloading CSV:', error);
+            console.error("Error downloading CSV:", error);
         }
     }
     const mutation = useMutation({
@@ -50,7 +51,7 @@ export default function Page() {
         }
     }
     const getFileNameFromUrl = (url) => {
-        const pathParts = url.split('/');
+        const pathParts = url.split("/");
         return pathParts.pop();
     }
     useEffect(() => {
@@ -145,7 +146,7 @@ export default function Page() {
                                 <TableCell>{account.promotion ? "Yes" : "No"}</TableCell>
                                 <TableCell>
                                     {account.financialProof ?
-                                        <Button variant="link" asChild  className="text-blue-500">
+                                        <Button variant="link" asChild className="text-blue-500">
                                             <Link href={account.financialProof}>{getFileNameFromUrl(account.financialProof)}</Link>
                                         </Button>
                                         : null}

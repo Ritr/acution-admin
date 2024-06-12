@@ -23,7 +23,7 @@ const PropertySchema = new Schema(
         title: String,
         traditionalChineseTitle: String,
         traditionalChineseAddress: String,
-        BrokerTraditionalChineseName: String,
+        brokerTraditionalChineseName: String,
         traditionalChineseContent: String,
         traditionalChinesePriceList: String,
 

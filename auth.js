@@ -19,13 +19,12 @@ export const {
             // You can specify which fields should be submitted, by adding keys to the `credentials` object.
             // e.g. domain, accountname, password, 2FA token, etc.
             credentials: {
-                // email: {},
-                password: {},
-                // name: String,
+                email: String,
+                name: String,
+                permissions: String,
                 // abc: String,
             },
             authorize: async (credentials) => {
-                console.log(credentials);
                 let account = null;
                 await connectMongo();
                 account = await Account.findOne({
@@ -48,21 +47,15 @@ export const {
         }),
     ],
     callbacks: {
-        async session({
-            session,
-            token
-        }) {
-            session.account = token.account;
+        async session({ session, token }) {
+            session.user = token.user;
             return session;
         },
-        async jwt({
-            token,
-            account
-        }) {
-            if (account) {
-                token.account = account;
+        async jwt({ token, user }) {
+            if (user) {
+                token.user = user;
             }
             return token;
-        },
+        }
     },
 });

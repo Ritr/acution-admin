@@ -11,7 +11,7 @@ import {
 import { useEffect, useState } from "react";
 
 
-export default function AdvancedDropzoneDemo({ defaultValue, maxFiles = 3, onChange }) {
+export default function AdvancedDropzoneDemo({ defaultValue, maxFiles = 3, accept = "image/*", onChange }) {
     const [extFiles, setExtFiles] = useState([]);
     const [imageSrc, setImageSrc] = useState();
     const [videoSrc, setVideoSrc] = useState();
@@ -40,7 +40,7 @@ export default function AdvancedDropzoneDemo({ defaultValue, maxFiles = 3, onCha
             if (item.serverResponse.payload.message === "success") {
                 files.map((ef) => {
                     if (ef.id === item.id) {
-                        ef.imageUrl = item.serverResponse.payload.url;
+                        ef.url = item.serverResponse.payload.url;
                         ef.uploadStatus = "success";
                     }
                 })
@@ -51,8 +51,8 @@ export default function AdvancedDropzoneDemo({ defaultValue, maxFiles = 3, onCha
             if (item.uploadStatus == "success") {
                 return {
                     id: item.id,
-                    imageUrl: item.imageUrl,
-                    name: item.nam,
+                    url: item.url,
+                    name: item.name,
                     size: item.size,
                     type: item.type,
                     uploadStatus: "success",
@@ -69,12 +69,14 @@ export default function AdvancedDropzoneDemo({ defaultValue, maxFiles = 3, onCha
         }
         setExtFiles(defaultValue);
     }, [defaultValue])
+
+
     return (
         <>
             <Dropzone
                 onChange={updateFiles}
                 value={extFiles}
-                accept="image/*"
+                accept={accept}
                 maxFiles={maxFiles}
                 label="Drag'n drop files here or click to browse"
                 uploadConfig={{
@@ -90,6 +92,7 @@ export default function AdvancedDropzoneDemo({ defaultValue, maxFiles = 3, onCha
             >
                 {/* {JSON.stringify(extFiles)} */}
                 {extFiles ? extFiles.map((file) => (
+
                     <FileMosaic
                         {...file}
                         key={file.id}
@@ -99,6 +102,7 @@ export default function AdvancedDropzoneDemo({ defaultValue, maxFiles = 3, onCha
                         alwaysActive
                         smartImgFit="center"
                         preview
+                        imageUrl={file.url}
                     />
                 )) : null}
             </Dropzone>

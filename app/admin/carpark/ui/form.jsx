@@ -91,7 +91,7 @@ export default function Page({ onOk, defaultProperty, loading }) {
                         </div>
                         <div className="pb-2">
                             <Label>Broker&apos;s traditional Chinese name</Label>
-                            <Input id="BrokerTraditionalChineseName" name="BrokerTraditionalChineseName" {...register("BrokerTraditionalChineseName")} placeholder="Broker&apos;s traditional Chinese name" required />
+                            <Input id="brokerTraditionalChineseName" name="brokerTraditionalChineseName" {...register("brokerTraditionalChineseName")} placeholder="Broker&apos;s traditional Chinese name" required />
                         </div>
                         <div className="pb-2">
                             <Label>Traditional Chinese content</Label>
@@ -230,7 +230,7 @@ export default function Page({ onOk, defaultProperty, loading }) {
                         name="startDateTime"
                         control={control}
                         render={({ field }) => (
-                            <DatePicker hourCycle="24" hideTimeZone id="startDateTime" name="startDateTime" {...field} placeholder="Start dateTime" isRequired></DatePicker>
+                            <DatePicker granularity="minute" hourCycle="24" hideTimeZone id="startDateTime" name="startDateTime" {...field} placeholder="Start dateTime" isRequired></DatePicker>
                         )}
                     />
                 </div>
@@ -240,7 +240,7 @@ export default function Page({ onOk, defaultProperty, loading }) {
                         name="completionDateTime"
                         control={control}
                         render={({ field }) => (
-                            <DatePicker hourCycle="24" hideTimeZone id="completionDateTime" name="completionDateTime" {...field} placeholder="Completion dateTime" isRequired></DatePicker>
+                            <DatePicker granularity="minute" hourCycle="24" hideTimeZone id="completionDateTime" name="completionDateTime" {...field} placeholder="Completion dateTime" isRequired></DatePicker>
                         )}
                     />
                 </div>
@@ -266,7 +266,7 @@ export default function Page({ onOk, defaultProperty, loading }) {
                         name="files"
                         control={control}
                         render={({ field }) => (
-                            <Upload maxFiles={4} {...field} defaultValue={formState.defaultValues.files ? formState.defaultValues.files : null} />
+                            <Upload accept="image/*,.pdf" maxFiles={4} {...field} defaultValue={formState.defaultValues.files ? formState.defaultValues.files : null} />
                         )}>
                     </Controller>
                 </div>
@@ -281,7 +281,7 @@ export default function Page({ onOk, defaultProperty, loading }) {
                 <div className="pb-2">
                     <Label>Broker&apos;s WeChat</Label>
                     <Input id="brokerWeChat" name="brokerWeChat" placeholder="Broker&apos;s WeChat" {...register("brokerWeChat")} required />
-                </div>               
+                </div>
                 <div>
                     <Button className="w-full" color="primary" type="submit" loading={loading}>Submit</Button>
                 </div>

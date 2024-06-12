@@ -29,17 +29,23 @@ const Header = () => {
         <Navbar className="w-full" maxWidth="full">
             <NavbarBrand>
                 <p className="font-bold text-inherit">AUCTION ADMIN</p>
+                {/* {JSON.stringify(session)} */}
             </NavbarBrand>
             <NavbarContent className="gap-4" justify="start">
                 <NavigationMenu>
                     <NavigationMenuList>
-                        <NavigationMenuItem>
-                            <Link href="/admin/account" legacyBehavior passHref>
-                                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                                    Account Manage
-                                </NavigationMenuLink>
-                            </Link>
-                        </NavigationMenuItem>
+                        {
+                            status === "authenticated" ?
+                                session.user.permissions === "yes" ?
+                                    <NavigationMenuItem>
+                                        <Link href="/admin/account" legacyBehavior passHref>
+                                            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                                                Account Manage
+                                            </NavigationMenuLink>
+                                        </Link>
+                                    </NavigationMenuItem> : null
+                                : null
+                        }
                         <NavigationMenuItem>
                             <Link href="/admin/member" legacyBehavior passHref>
                                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>

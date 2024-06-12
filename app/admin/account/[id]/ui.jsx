@@ -15,7 +15,6 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import { useEffect } from "react";
 export default function Page({ defaultAccount }) {
-    console.log(defaultAccount);
     const mutation = useMutation({
         mutationFn: (data) => {
             data._id = defaultAccount._id;

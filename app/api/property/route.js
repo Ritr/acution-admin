@@ -59,9 +59,6 @@ export async function GET(request) {
             .lean();
         // 根据时间判断，如果是撤回、禁止之类的状态，就跳过
         const result = properties.map(item => {
-            console.log(new Date(item.completionDateTime));
-            console.log(new Date());
-            console.log(new Date(item.completionDateTime) >= new Date());
             // console.log(new Date(item.startDateTime) <= new Date());
             if (new Date(item.completionDateTime) <= new Date()) {
                 item.status = "Completed";
