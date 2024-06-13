@@ -66,6 +66,14 @@ export async function POST(request) {
     });
     try {
         await connectMongo();
+        let user = await User.findOne({ email });
+        if (user) {
+            return NextResponse.json({ error: "Email already exists" });
+        }
+        user = await User.findOne({ phone, code });
+        if (user) {
+            return NextResponse.json({ error: "Phone already exists" });
+        }
         await account.save();
         return NextResponse.json({ msg: "save success" });
     } catch (error) {

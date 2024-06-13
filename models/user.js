@@ -7,7 +7,13 @@ import { model, models, Schema } from 'mongoose';
 // > 檢查密碼與確認密碼是否一致
 const UserSchema = new Schema(
     {
-        email: String,
+        email: {
+            type: String,
+            unique: {
+                value: true,
+                message: 'Email already exists'
+            }
+        },
         countryAndRegion: String,
         code: String,
         phone: String,
@@ -28,7 +34,21 @@ const UserSchema = new Schema(
             type: Date,
             default: Date.now,
         },
+        // 添加一个复合唯一索引
+        uniqueFields: {
+            type: [String],
+            required: true,
+            unique: true
+        }
     }
 );
+UserSchema.index({ code: 1, phone: 1 }, {
+    unique: {
+        value: true,
+        message: 'Phone already exists'
+    }
+});
 const User = models.User || model('User', UserSchema, 'users');
+
+
 export default User;

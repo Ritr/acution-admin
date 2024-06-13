@@ -7,9 +7,14 @@ import { model, models, Schema } from 'mongoose';
 // > 檢查密碼與確認密碼是否一致
 const AccountSchema = new Schema(
     {
-        email: String,
+        email: {
+            type: String, unique: {
+                value: true,
+                message: 'Email already exists'
+            }
+        },
         name: String,
-        password: { type: String, select: false },
+        password: String,
         permissions: String,
         status: {
             type: String,

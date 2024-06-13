@@ -324,22 +324,13 @@ export default function Page({ onOk, defaultProperty, loading }) {
                     <Input id="brokerWeChat" name="brokerWeChat" placeholder="Broker&apos;s WeChat" {...register("brokerWeChat")} required />
                 </div>
                 <div className="pb-2">
-                    <Label>Construction area</Label>
-                    <Input id="constructionArea" name="constructionArea" placeholder="Construction area" {...register("constructionArea")} required />
+                    <Label>Gross Floor Area</Label>
+                    <Input id="constructionArea"  title="only number" pattern="^(?!0\d)\d*(?:\.\d+)?$" name="constructionArea" placeholder="Gross Floor Area" {...register("constructionArea")} required />
                 </div>
-                {/* <div className="pb-2">
-                    <Label>Construction unitPrice</Label>
-                    <Input id="constructionUnitPrice" name="constructionUnitPrice" placeholder="Construction unitPrice" {...register("constructionUnitPrice")} required />
-                </div> */}
-
                 <div className="pb-2">
-                    <Label>Practical area</Label>
-                    <Input id="practicalArea" name="practicalArea" placeholder="Practical area" {...register("practicalArea")} required />
+                    <Label>Saleable area</Label>
+                    <Input id="practicalArea" title="only number" pattern="^(?!0\d)\d*(?:\.\d+)?$" name="practicalArea" placeholder="Saleable area" {...register("practicalArea")} required />
                 </div>
-                {/* <div className="pb-2">
-                    <Label>Practical unitPrice</Label>
-                    <Input id="practicalUnitPrice" name="practicalUnitPrice" placeholder="Practical unitPrice" {...register("practicalUnitPrice")} required />
-                </div> */}
                 <div>
                     <Button className="w-full" color="primary" type="submit" loading={loading}>Submit</Button>
                 </div>

@@ -12,6 +12,15 @@ export async function PUT(request, { params }) {
     const account = await Account.findById(id);
     if (account) {
         await connectMongo();
+        const oldEmail = account.email;
+        if (oldEmail !== email) {
+            const user = await Account.findOne({ email });
+            if (user) {
+                return NextResponse.json({
+                    error: "Email already exists."
+                });
+            }
+        }
         account.email = email;
         account.name = name;
         account.status = status;

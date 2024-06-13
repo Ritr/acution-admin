@@ -19,9 +19,28 @@ export async function PUT(request, { params }) {
         promotion,
         reasonForBanning
     } = await request.json();
+    await connectMongo();
     const account = await User.findById(id);
     if (account) {
-        await connectMongo();
+        const oldEmail = account.email;
+        const oldCode = account.code;
+        const oldPhone = account.phone;
+        if (oldEmail !== email) {
+            const user = await User.findOne({ email });
+            if (user) {
+                return NextResponse.json({
+                    error: "Email already exists."
+                });
+            }
+        }
+        if (oldCode !== code && oldPhone !== phone) {
+            const user = await User.findOne({ code, phone });
+            if (user) {
+                return NextResponse.json({
+                    error: "Phone already exists."
+                });
+            }
+        }
         const oldStatus = account.status;
         account.email = email;
         account.countryAndRegion = countryAndRegion;
@@ -37,8 +56,6 @@ export async function PUT(request, { params }) {
         account.address = address;
         account.reasonForBanning = reasonForBanning;
         await account.save();
-        console.log(oldStatus);
-        console.log(status);
         if (oldStatus !== status) {
             let subject = status + " remainder";
             let text = `Your account is ${status}.`;
