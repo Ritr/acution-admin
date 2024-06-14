@@ -1,5 +1,5 @@
 "use client";
-import { Tabs, Tab, Button, DatePicker, Select, SelectItem, } from "@nextui-org/react";
+import { Tabs, Tab, Button, DatePicker, Select, SelectItem, Checkbox } from "@nextui-org/react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -8,20 +8,22 @@ import Upload from "@/app/ui/upload";
 import json from "@/utils//carParkDic";
 import { useForm, Controller } from "react-hook-form";
 import { parseDate, parseAbsoluteToLocal } from "@internationalized/date";
+import { ToastContainer, toast } from "react-toastify";
+import dayjs from "dayjs";
 
-const UploadRef = forwardRef((props, ref) => {
-    return <Upload ref={ref} {...props} />;
-});
 export default function Page({ onOk, defaultProperty, loading }) {
     const [render, setRender] = useState(false);
     const { register, handleSubmit, control, formState, reset, watch } = useForm({
         defaultValues: defaultProperty ? {
             ...defaultProperty,
-            startDateTime: parseAbsoluteToLocal(defaultProperty.startDateTime),
-            completionDateTime: parseAbsoluteToLocal(defaultProperty.completionDateTime),
+            startDateTime: defaultProperty.startDateTime ? dayjs(defaultProperty.startDateTime).format("YYYY-MM-DD hh:mm") : undefined,
+            completionDateTime: defaultProperty.completionDateTime ? dayjs(defaultProperty.completionDateTime).format("YYYY-MM-DD hh:mm") : undefined,
+            postDateTime: defaultProperty.postDateTime ? dayjs(defaultProperty.postDateTime).format("YYYY-MM-DD hh:mm") : undefined,
         } : {},
     });
-
+    const formData = watch();
+    const startDateTime = watch("startDateTime");
+    const completionDateTime = watch("completionDateTime");
     const [regionList1, setRegionList1] = useState(json.region);
     const [regionList2, setRegionList2] = useState([]);
     const [regionList3, setRegionList3] = useState([]);
@@ -32,17 +34,47 @@ export default function Page({ onOk, defaultProperty, loading }) {
 
     const onSubmit = (data) => {
         const params = { ...data };
-        params.startDateTime = data.startDateTime.toDate().toISOString();
-        params.completionDateTime = data.completionDateTime.toDate().toISOString();
+        if (!params.coverImage) {
+            toast.error("Please upload the cover image");
+            return;
+        }
+        if (!params.traditionalChineseTitle) {
+            toast.error("Please enter the content in traditional Chinese");
+            return;
+        }
+
+        if (!params.simplifiedChineseTitle) {
+            toast.error("Please enter the content in simplified Chinese");
+            return;
+        }
+
+        if (!params.englishTitle) {
+            toast.error("Please enter the content in English");
+            return;
+        }
+        if (!params.files && !params.files.length) {
+            toast.error("Please upload files");
+            return;
+        }
         params.region1 = region1;
         params.region2 = region2;
         params.region3 = region3;
-        // debugger;
         params.region = region3;
         delete params._id;
         delete params.__v;
         onOk(params);
     };
+    const onSave = () => {
+        const params = { ...formData };
+        // debugger;
+        params.region1 = region1;
+        params.region2 = region2;
+        params.region3 = region3;
+        params.region = region3;
+        delete params._id;
+        delete params.__v;
+        onOk(params);
+    }
     useEffect(() => {
         if (region1) {
             if (render) {
@@ -81,6 +113,7 @@ export default function Page({ onOk, defaultProperty, loading }) {
     return (
         <div>
             {/* {JSON.stringify(defaultProperty)} */}
+            <ToastContainer autoClose={2000} position="top-center" />
             <form action="" onSubmit={handleSubmit(onSubmit)}>
                 <Tabs className="w-full [&>div]:w-full">
                     <Tab key="TraditionalChines" title="Traditional Chinese">
@@ -91,10 +124,6 @@ export default function Page({ onOk, defaultProperty, loading }) {
                         <div className="pb-2">
                             <Label htmlFor="traditionalChineseAddress">Traditional Chinese address</Label>
                             <Textarea id="traditionalChineseAddress" name="traditionalChineseAddress" {...register("traditionalChineseAddress")} placeholder="Traditional Chinese address" required />
-                        </div>
-                        <div className="pb-2">
-                            <Label>Broker&apos;s traditional Chinese name</Label>
-                            <Input id="brokerTraditionalChineseName" name="brokerTraditionalChineseName" {...register("brokerTraditionalChineseName")} placeholder="Broker&apos;s traditional Chinese name" required />
                         </div>
                         <div className="pb-2">
                             <Label>Traditional Chinese content</Label>
@@ -115,10 +144,6 @@ export default function Page({ onOk, defaultProperty, loading }) {
                             <Label htmlFor="password">Simplified Chinese address</Label>
                             <Textarea id="simplifiedChineseAddress" name="simplifiedChineseAddress" {...register("simplifiedChineseAddress")} placeholder="Simplified Chinese address" required />
                         </div>
-                        <div className="pb-2">
-                            <Label>Broker&apos;s simplified Chinese name</Label>
-                            <Input id="BrokerSimplifiedChineseName" name="BrokerSimplifiedChineseName" {...register("BrokerSimplifiedChineseName")} placeholder="Broker&apos;s simplified Chinese name" required />
-                        </div>
 
                         <div className="pb-2">
                             <Label>simplified Chinese content</Label>
@@ -138,10 +163,6 @@ export default function Page({ onOk, defaultProperty, loading }) {
                         <div className="pb-2">
                             <Label htmlFor="englishAddress">English address</Label>
                             <Textarea id="englishAddress" name="englishAddress" {...register("englishAddress")} placeholder="English address" required />
-                        </div>
-                        <div className="pb-2">
-                            <Label>Broker&apos;s English name</Label>
-                            <Input id="brokerEnglishName" name="brokerEnglishName" {...register("brokerEnglishName")} placeholder="Broker&apos;s English name" required />
                         </div>
                         <div className="pb-2">
                             <Label>English content</Label>
@@ -205,12 +226,12 @@ export default function Page({ onOk, defaultProperty, loading }) {
                         name="coverImage"
                         control={control}
                         render={({ field }) => (
-                            <UploadRef
+                            <Upload
                                 maxFiles={1}
                                 {...field}
                                 defaultValue={formState.defaultValues.coverImage ? [formState.defaultValues.coverImage] : null}
                                 onChange={(arr) => field.onChange(arr ? arr[0] : null)}>
-                            </UploadRef>
+                            </Upload>
                         )}>
 
                     </Controller>
@@ -221,7 +242,7 @@ export default function Page({ onOk, defaultProperty, loading }) {
                         name="otherImages"
                         control={control}
                         render={({ field }) => (
-                            <UploadRef maxFiles={4} {...field} defaultValue={formState.defaultValues.otherImages ? formState.defaultValues.otherImages : null} />
+                            <Upload maxFiles={4} {...field} defaultValue={formState.defaultValues.otherImages ? formState.defaultValues.otherImages : null} />
                         )}>
 
                     </Controller>
@@ -229,23 +250,11 @@ export default function Page({ onOk, defaultProperty, loading }) {
                 </div>
                 <div className="pb-2">
                     <Label htmlFor="startDateTime">Start datetime</Label>
-                    <Controller
-                        name="startDateTime"
-                        control={control}
-                        render={({ field }) => (
-                            <DatePicker granularity="minute" hourCycle="24" hideTimeZone id="startDateTime" name="startDateTime" {...field} placeholder="Start dateTime" isRequired></DatePicker>
-                        )}
-                    />
+                    <Input type="datetime-local" max={completionDateTime ? dayjs(completionDateTime).add(-1, 'day').format("YYYY-MM-DD HH:mm:ss") : undefined} {...register("startDateTime")} required></Input>
                 </div>
                 <div className="pb-2">
                     <Label htmlFor="Completion datetime">Completion datetime</Label>
-                    <Controller
-                        name="completionDateTime"
-                        control={control}
-                        render={({ field }) => (
-                            <DatePicker granularity="minute" hourCycle="24" hideTimeZone id="completionDateTime" name="completionDateTime" {...field} placeholder="Completion dateTime" isRequired></DatePicker>
-                        )}
-                    />
+                    <Input type="datetime-local" min={startDateTime ? dayjs(startDateTime).add(1, 'day').format("YYYY-MM-DD HH:mm:ss") : undefined}  {...register("completionDateTime")} required></Input>
                 </div>
                 <div className="pb-2">
                     <Label htmlFor="startingPrice">Starting price</Label>
@@ -269,21 +278,53 @@ export default function Page({ onOk, defaultProperty, loading }) {
                         name="files"
                         control={control}
                         render={({ field }) => (
-                            <UploadRef accept="image/*,.pdf" maxFiles={4} {...field} defaultValue={formState.defaultValues.files ? formState.defaultValues.files : null} />
+                            <Upload accept="image/*,.pdf" maxFiles={4} {...field} defaultValue={formState.defaultValues.files ? formState.defaultValues.files : null} />
                         )}>
                     </Controller>
                 </div>
+
+                <div className="pb-2">
+                    <Label>Broker&apos;s traditional Chinese name</Label>
+                    <Input id="brokerTraditionalChineseName" name="brokerTraditionalChineseName" {...register("brokerTraditionalChineseName")} placeholder="Broker&apos;s traditional Chinese name" />
+                </div>
+                <div className="pb-2">
+                    <Label>Broker&apos;s simplified Chinese name</Label>
+                    <Input id="BrokerSimplifiedChineseName" name="BrokerSimplifiedChineseName" {...register("BrokerSimplifiedChineseName")} placeholder="Broker&apos;s simplified Chinese name" />
+                </div>
+                <div className="pb-2">
+                    <Label>Broker&apos;s English name</Label>
+                    <Input id="brokerEnglishName" name="brokerEnglishName" {...register("brokerEnglishName")} placeholder="Broker&apos;s English name" required />
+                </div>
                 <div className="pb-2">
                     <Label>Broker&apos;s  phone number</Label>
-                    <Input title="only number" pattern="[0-9]*" id="brokerPhoneNumber" name="brokerPhoneNumber" {...register("brokerPhoneNumber")} placeholder="Broker&apos;s  phone number" required />
+                    <Input title="only number" pattern="[0-9]*" id="brokerPhoneNumber" name="brokerPhoneNumber" {...register("brokerPhoneNumber")} placeholder="Broker&apos;s  phone number" />
                 </div>
                 <div className="pb-2">
                     <Label>Broker&apos;s email</Label>
-                    <Input type="email" id="brokerEmail" name="brokerEmail" placeholder="Broker&apos;s email" {...register("brokerEmail")} required />
+                    <Input type="email" id="brokerEmail" name="brokerEmail" placeholder="Broker&apos;s email" {...register("brokerEmail")} />
                 </div>
                 <div className="pb-2">
                     <Label>Broker&apos;s WeChat</Label>
-                    <Input id="brokerWeChat" name="brokerWeChat" placeholder="Broker&apos;s WeChat" {...register("brokerWeChat")} required />
+                    <Input id="brokerWeChat" name="brokerWeChat" placeholder="Broker&apos;s WeChat" {...register("brokerWeChat")} />
+                </div>
+
+                <div className="pb-2">
+                    <Label htmlFor="post">Post website</Label>
+                    <div className="flex gap-2 items-center">
+                        <Checkbox {...register("post")} >will post property to website</Checkbox>
+                    </div>
+                </div>
+                <div className="pb-2">
+                    <Label htmlFor="postDateTime">Post datetime</Label>
+                    <Input type="datetime-local" {...register("postDateTime")} required></Input>
+                </div>
+                <div>
+                    {loading.toString()}
+                    {
+                        formData.post ?
+                            <Button className="w-full" color="primary" type="submit" isLoading={loading}>Save And Post Website</Button> :
+                            <Button className="w-full" color="secondary" isLoading={loading} onClick={onSave}>Save</Button>
+                    }
                 </div>
                 <div>
                     <Button className="w-full" color="primary" type="submit" loading={loading}>Submit</Button>

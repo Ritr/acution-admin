@@ -9,8 +9,8 @@ import json from "../../../../utils/propertyDic";
 import { useForm, Controller } from "react-hook-form";
 import { parseDate, parseAbsoluteToLocal } from "@internationalized/date";
 import { ToastContainer, toast } from "react-toastify";
-
 import dayjs from "dayjs";
+
 export default function Page({ onOk, defaultProperty, loading }) {
     const [render, setRender] = useState(false);
     const { register, handleSubmit, control, formState, reset, watch } = useForm({
@@ -298,8 +298,6 @@ export default function Page({ onOk, defaultProperty, loading }) {
                 </div>
                 <div className="pb-2">
                     <Label htmlFor="startDateTime">Start datetime</Label>
-
-
                     <Input type="datetime-local" max={completionDateTime ? dayjs(completionDateTime).add(-1, 'day').format("YYYY-MM-DD HH:mm:ss") : undefined} {...register("startDateTime")} required></Input>
                 </div>
                 <div className="pb-2">
