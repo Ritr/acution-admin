@@ -170,12 +170,12 @@ export default function Page() {
                             <TableRow key={property._id}>
                                 <TableCell>{property.englishTitle}</TableCell>
                                 <TableCell>{property.englishAddress}</TableCell>
-                                <TableCell>{property.regionDes.englishRegion.split("---").pop()}</TableCell>
+                                <TableCell>{property.regionDes?.englishRegion.split("---").pop()}</TableCell>
                                 <TableCell>{dayjs(property.startDateTime).format("YYYY-MM-DD")}</TableCell>
                                 <TableCell>{dayjs(property.completionDateTime).format("YYYY-MM-DD")}</TableCell>
                                 <TableCell>{property.reservePrice}</TableCell>
                                 <TableCell>{property.currentPrice}</TableCell>
-                                <TableCell>{property.startingPrice.toLocaleString()}</TableCell>
+                                <TableCell>{property.startingPrice?.toLocaleString()}</TableCell>
                                 <TableCell>
                                     {/* AboutToStart InProgress Completed Aborted Cancelled */}
                                     {

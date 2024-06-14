@@ -11,31 +11,19 @@ import {
 import { useEffect, useState } from "react";
 
 
-export default function AdvancedDropzoneDemo({ defaultValue = [], maxFiles = 3, accept = "image/*", onChange }) {
-    const [extFiles, setExtFiles] = useState(defaultValue);
+export default function AdvancedDropzoneDemo({ defaultValue, maxFiles = 3, accept = "image/*", onChange }) {
+    const [extFiles, setExtFiles] = useState([]);
     const [imageSrc, setImageSrc] = useState();
     const [videoSrc, setVideoSrc] = useState();
 
     const updateFiles = (incommingFiles) => {
+        console.log("incomming files", incommingFiles);
         setExtFiles(incommingFiles);
     };
     const onDelete = (id) => {
-        const files = [...extFiles];
-        setExtFiles(files.filter((x) => x.id !== id));
-        let files2 = files.map(item => {
-            if (item.uploadStatus == "success" && item.id !== id) {
-                return {
-                    id: item.id,
-                    url: item.url,
-                    name: item.name,
-                    size: item.size,
-                    type: item.type,
-                    uploadStatus: "success",
-                    valid: true
-                }
-            }
-        })
-        onChange(files2);
+        const files = extFiles.filter((x) => x.id !== id);
+        setExtFiles(files);
+        emit(files);
     };
     const handleSee = (imageSource) => {
         setImageSrc(imageSource);
@@ -61,6 +49,9 @@ export default function AdvancedDropzoneDemo({ defaultValue = [], maxFiles = 3, 
             }
         });
         setExtFiles(files);
+        emit(files);
+    };
+    const emit = (files) => {
         let files2 = files.map(item => {
             if (item.uploadStatus == "success") {
                 return {
@@ -74,8 +65,20 @@ export default function AdvancedDropzoneDemo({ defaultValue = [], maxFiles = 3, 
                 }
             }
         })
-        onChange(files2);
-    };
+        console.log("files2", files2);
+        if (files2 && files2.length > 0) {
+            onChange(files2);
+        } else {
+            onChange(null);
+        }
+    }
+    useEffect(() => {
+        if (!defaultValue) {
+            return;
+        }
+        setExtFiles(defaultValue);
+    }, [defaultValue]);
+
     return (
         <>
             <Dropzone
@@ -96,21 +99,20 @@ export default function AdvancedDropzoneDemo({ defaultValue = [], maxFiles = 3, 
                 }}
             >
                 {/* {JSON.stringify(extFiles)} */}
-                {extFiles ? extFiles.map((file) => {
-                    return (
-                        file ? <FileMosaic
-                            {...file}
-                            key={file.id}
-                            onDelete={onDelete}
-                            onSee={handleSee}
-                            onWatch={handleWatch}
-                            alwaysActive
-                            smartImgFit="center"
-                            preview
-                            imageUrl={file.url}
-                        /> : null
-                    )
-                }) : null}
+                {extFiles ? extFiles.map((file) => (
+
+                    <FileMosaic
+                        {...file}
+                        key={file.id}
+                        onDelete={onDelete}
+                        onSee={handleSee}
+                        onWatch={handleWatch}
+                        alwaysActive
+                        smartImgFit="center"
+                        preview
+                        imageUrl={file.url}
+                    />
+                )) : null}
             </Dropzone>
             {
                 imageSrc &&

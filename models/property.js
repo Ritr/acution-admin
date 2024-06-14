@@ -57,6 +57,8 @@ const PropertySchema = new Schema(
         propertyAddress: String,
         startDateTime: Date,
         completionDateTime: Date,
+        postDateTime: Date,
+        post:Boolean,
         coverImage: Object,
         otherImages: Array,
         files: Array,

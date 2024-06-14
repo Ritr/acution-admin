@@ -3,12 +3,15 @@ import { Tabs, Tab, Button, DatePicker, Select, SelectItem, } from "@nextui-org/
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useEffect, useState, useRef, useLayoutEffect } from "react";
+import { useEffect, useState, useRef, useLayoutEffect, forwardRef } from "react";
 import Upload from "@/app/ui/upload";
 import json from "@/utils//carParkDic";
 import { useForm, Controller } from "react-hook-form";
 import { parseDate, parseAbsoluteToLocal } from "@internationalized/date";
 
+const UploadRef = forwardRef((props, ref) => {
+    return <Upload ref={ref} {...props} />;
+});
 export default function Page({ onOk, defaultProperty, loading }) {
     const [render, setRender] = useState(false);
     const { register, handleSubmit, control, formState, reset, watch } = useForm({
@@ -202,12 +205,12 @@ export default function Page({ onOk, defaultProperty, loading }) {
                         name="coverImage"
                         control={control}
                         render={({ field }) => (
-                            <Upload
+                            <UploadRef
                                 maxFiles={1}
                                 {...field}
                                 defaultValue={formState.defaultValues.coverImage ? [formState.defaultValues.coverImage] : null}
                                 onChange={(arr) => field.onChange(arr ? arr[0] : null)}>
-                            </Upload>
+                            </UploadRef>
                         )}>
 
                     </Controller>
@@ -218,7 +221,7 @@ export default function Page({ onOk, defaultProperty, loading }) {
                         name="otherImages"
                         control={control}
                         render={({ field }) => (
-                            <Upload maxFiles={4} {...field} defaultValue={formState.defaultValues.otherImages ? formState.defaultValues.otherImages : null} />
+                            <UploadRef maxFiles={4} {...field} defaultValue={formState.defaultValues.otherImages ? formState.defaultValues.otherImages : null} />
                         )}>
 
                     </Controller>
@@ -266,7 +269,7 @@ export default function Page({ onOk, defaultProperty, loading }) {
                         name="files"
                         control={control}
                         render={({ field }) => (
-                            <Upload accept="image/*,.pdf" maxFiles={4} {...field} defaultValue={formState.defaultValues.files ? formState.defaultValues.files : null} />
+                            <UploadRef accept="image/*,.pdf" maxFiles={4} {...field} defaultValue={formState.defaultValues.files ? formState.defaultValues.files : null} />
                         )}>
                     </Controller>
                 </div>

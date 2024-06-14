@@ -42,6 +42,8 @@ const CarParkSchema = new Schema(
         age: Number,
         startDateTime: Date,
         completionDateTime: Date,
+        postDateTime:Date,
+        post:Boolean,
         coverImage: Object,
         otherImages: Array,
         files: Array,
