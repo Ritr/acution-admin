@@ -276,7 +276,7 @@ export default function Page({ onOk, defaultProperty, loading }) {
                             <Upload
                                 maxFiles={1}
                                 {...field}
-                                defaultValue={defaultProperty.coverImage ? [defaultProperty.coverImage] : undefined}
+                                defaultValue={formState.defaultValues.coverImage ? [formState.defaultValues.coverImage] : undefined}
                                 onChange={(arr) => field.onChange(arr ? arr[0] : undefined)}
                             >
                             </Upload>
