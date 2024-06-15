@@ -1,5 +1,5 @@
 import connectMongo from "@/lib/connect-mongo";
-import Carpark from "@/models/carpark";
+import Carpark from "@/models/carPark";
 import { NextResponse } from "next/server";
 export async function PUT(request, { params }) {
     await connectMongo();

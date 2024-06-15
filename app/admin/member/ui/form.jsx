@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/select";
 import { useForm, Controller } from "react-hook-form";
 import codeList from "@/utils/code";
+import Upload from "@/app/ui/upload";
 
 export default function Page({ defaultMember = { password: "999999" }, submit, loading }) {
     const { register, handleSubmit, control, watch, formState } = useForm({
@@ -32,7 +33,8 @@ export default function Page({ defaultMember = { password: "999999" }, submit, l
             code
         });
     };
-
+    const idCardStatus = watch("idCardStatus");
+    const addressProofStatus = watch("addressProofStatus");
     return (
         <div className="pt-6">
             <form action="" onSubmit={handleSubmit(onSubmit)}>
@@ -114,6 +116,70 @@ export default function Page({ defaultMember = { password: "999999" }, submit, l
                     </Controller>
                 </div>
                 <div className="pb-2">
+                    <Label>idCard</Label>
+                    <Controller
+                        name="idCard"
+                        control={control}
+                        render={({ field }) => (
+                            <Upload maxFiles={4} {...field} defaultValue={formState.defaultValues.idCard ? formState.defaultValues.idCard : undefined} />
+                        )}>
+
+                    </Controller>
+
+                </div>
+                <div className="pb-2">
+                    <Label htmlFor="promotion">idCard status</Label>
+                    <Controller
+                        control={control}
+                        name="idCardStatus"
+                        render={({ field }) => (
+                            <Select {...field} onValueChange={field.onChange} required>
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Select status" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="0">To be submitted</SelectItem>
+                                    <SelectItem value="1">To be Approved</SelectItem>
+                                    <SelectItem value="2">Approved</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        )}
+                    >
+                    </Controller>
+                </div>
+                <div className="pb-2">
+                    <Label>Address proof</Label>
+                    <Controller
+                        name="addressProof"
+                        control={control}
+                        render={({ field }) => (
+                            <Upload maxFiles={4} {...field} defaultValue={formState.defaultValues.addressProof ? formState.defaultValues.addressProof : undefined} />
+                        )}>
+
+                    </Controller>
+                </div>
+                <div className="pb-2">
+                    <Label>Address proof status</Label>
+                    <Controller
+                        control={control}
+                        name="addressProofStatus"
+                        render={({ field }) => (
+                            <Select {...field} onValueChange={field.onChange} required>
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Select status" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="0">To be submitted</SelectItem>
+                                    <SelectItem value="1">To be Approved</SelectItem>
+                                    <SelectItem value="2">Approved</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        )}
+                    >
+                    </Controller>
+                </div>
+
+                <div className="pb-2">
                     <Label htmlFor="status">Status</Label>
                     <Controller
                         control={control}
@@ -124,7 +190,7 @@ export default function Page({ defaultMember = { password: "999999" }, submit, l
                                     <SelectValue placeholder="Status" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="Activated">Activated</SelectItem>
+                                    <SelectItem disabled={idCardStatus !== "2" || addressProofStatus !== "2"} value="Activated">Activated</SelectItem>
                                     <SelectItem value="Deactivated">Deactivated</SelectItem>
                                 </SelectContent>
                             </Select>

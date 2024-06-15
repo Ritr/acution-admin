@@ -23,6 +23,10 @@ const UserSchema = new Schema(
         chineseSurname: String,
         password: { type: String, select: false },
         address: String,
+        addressProof: Array,
+        addressProofStatus: String,
+        idCard: Array,
+        idCardStatus: String,
         financialProof: String,
         promotion: {
             type: Boolean,
