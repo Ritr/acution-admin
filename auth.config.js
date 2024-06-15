@@ -12,6 +12,7 @@ export const authConfig = {
             // 如果用户已登录,则将其重定向到 "/home"
             const pathName = nextUrl.pathname;
             if (pathName.startsWith("/admin")) {
+                console.log("isLoggedInisLoggedInisLoggedInisLoggedInisLoggedIn", isLoggedIn);
                 if (!isLoggedIn) {
                     return false;
                 }
