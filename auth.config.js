@@ -12,20 +12,20 @@ export const authConfig = {
             // 如果用户已登录,则将其重定向到 "/home"
             const pathName = nextUrl.pathname;
             console.log("pathName", pathName);
-            // if (pathName.startsWith("/admin")) {
-            //     console.log("isLoggedInisLoggedInisLoggedInisLoggedInisLoggedIn", isLoggedIn);
-            //     if (!isLoggedIn) {
-            //         return false;
-            //     }
+            if (pathName.startsWith("/admin")) {
+                console.log("isLoggedInisLoggedInisLoggedInisLoggedInisLoggedIn", isLoggedIn);
+                if (!isLoggedIn) {
+                    return false;
+                }
 
-            //     if (auth.user.permissions !== "yes") {
-            //         if (pathName.startsWith("/admin/account")) {
-            //             const url = nextUrl.clone()
-            //             url.pathname = "/nopermissions";
-            //             return NextResponse.rewrite(url);
-            //         }
-            //     }
-            // }
+                if (auth.user.permissions !== "yes") {
+                    if (pathName.startsWith("/admin/account")) {
+                        const url = nextUrl.clone()
+                        url.pathname = "/nopermissions";
+                        return NextResponse.rewrite(url);
+                    }
+                }
+            }
             // 对于其他情况,返回 true 以允许访问任何页面
             return true;
         },
