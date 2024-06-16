@@ -159,7 +159,7 @@ export default function Page() {
                                             <Chip radius="sm" color="danger">To be submit</Chip> :
                                             account.financialProofStatus === "1" ?
                                                 <Chip radius="sm" color="warning">To be Approved</Chip> :
-                                                <Chip radius="sm" color="success">To be Approved</Chip>
+                                                <Chip radius="sm" color="success">Approved</Chip>
                                     }
                                 </TableCell>
                                 <TableCell>
