@@ -147,26 +147,26 @@ export default function Page() {
                                 <TableCell>
                                     {
                                         account.idCardStatus === "0" ?
-                                            <Chip radius="sm" color="danger">{account.idCardStatus}</Chip> :
+                                            <Chip radius="sm" color="danger">To be submit</Chip> :
                                             account.idCardStatus === "1" ?
-                                                <Chip radius="sm" color="warning">{account.idCardStatus}</Chip> :
-                                                <Chip radius="sm" color="success">{account.idCardStatus}</Chip>
+                                                <Chip radius="sm" color="warning">To be Approved</Chip> :
+                                                <Chip radius="sm" color="success">Approved</Chip>
                                     }
                                 </TableCell>
                                 <TableCell>
                                     {
-                                        account.FinacialProofStatus === "0" ?
-                                            <Chip radius="sm" color="danger">{account.FinacialProofStatus}</Chip> :
-                                            account.FinacialProofStatus === "1" ?
-                                                <Chip radius="sm" color="warning">{account.FinacialProofStatus}</Chip> :
-                                                <Chip radius="sm" color="success">{account.FinacialProofStatus}</Chip>
+                                        account.financialProofStatus === "0" ?
+                                            <Chip radius="sm" color="danger">To be submit</Chip> :
+                                            account.financialProofStatus === "1" ?
+                                                <Chip radius="sm" color="warning">To be Approved</Chip> :
+                                                <Chip radius="sm" color="success">To be Approved</Chip>
                                     }
                                 </TableCell>
                                 <TableCell>
                                     {
                                         account.status === "0" ?
-                                            <Chip radius="sm" color="danger">{account.status}</Chip> :
-                                            <Chip radius="sm" color="success">{account.status}</Chip>
+                                            <Chip radius="sm" color="danger">Deactivated</Chip> :
+                                            <Chip radius="sm" color="success">Activated</Chip>
                                     }
                                 </TableCell>
                                 <TableCell>{account.reasonForBanning}</TableCell>
