@@ -1,6 +1,6 @@
 "use client";
 import { Label } from "@/components/ui/label";
-import { Button, Textarea } from "@nextui-org/react";
+import { Button, Textarea, Checkbox } from "@nextui-org/react";
 import { Input } from "@/components/ui/input";
 import {
     Select,
@@ -16,8 +16,7 @@ import Upload from "@/app/ui/upload";
 export default function Page({ defaultMember = { password: "999999" }, submit, loading }) {
     const { register, handleSubmit, control, watch, formState } = useForm({
         defaultValues: {
-            ...defaultMember,
-            promotion: defaultMember.promotion ? "1" : "0"
+            ...defaultMember
         },
     });
     const onSubmit = (data) => {
@@ -27,7 +26,6 @@ export default function Page({ defaultMember = { password: "999999" }, submit, l
                 code = item.code;
             }
         });
-        data.promotion = data.promotion === "1" ? true : false;
         submit({
             ...data,
             code
@@ -98,22 +96,9 @@ export default function Page({ defaultMember = { password: "999999" }, submit, l
                 </div>
                 <div className="pb-2">
                     <Label htmlFor="promotion">Promotion recevial</Label>
-                    <Controller
-                        control={control}
-                        name="promotion"
-                        render={({ field }) => (
-                            <Select {...field} onValueChange={field.onChange} required>
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Promotion recevial" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="1">Yes</SelectItem>
-                                    <SelectItem value="0">No</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        )}
-                    >
-                    </Controller>
+                    <div className="flex gap-2 items-center">
+                        <Checkbox {...register("promotion")} >we will send you the latest message</Checkbox>
+                    </div>
                 </div>
                 <div className="pb-2">
                     <Label>idCard</Label>
@@ -190,8 +175,8 @@ export default function Page({ defaultMember = { password: "999999" }, submit, l
                                     <SelectValue placeholder="Status" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem disabled={idCardStatus !== "2" || addressProofStatus !== "2"} value="Activated">Activated</SelectItem>
-                                    <SelectItem value="Deactivated">Deactivated</SelectItem>
+                                    <SelectItem disabled={idCardStatus !== "2" || addressProofStatus !== "2"} value="1">Activated</SelectItem>
+                                    <SelectItem value="0">Deactivated</SelectItem>
                                 </SelectContent>
                             </Select>
                         )}

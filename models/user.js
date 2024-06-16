@@ -21,7 +21,7 @@ const UserSchema = new Schema(
         englishSurname: String,
         chineseName: String,
         chineseSurname: String,
-        password: { type: String, select: false },
+        password: String,
         address: String,
         addressProof: Array,
         addressProofStatus: String,

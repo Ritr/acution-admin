@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Table, TableHeader, TableBody, TableColumn, TableRow, TableCell, Pagination, Spinner } from "@nextui-org/react";
-import { Button } from "@/components/ui/button";
+import { Table, TableHeader, TableBody, TableColumn, TableRow, TableCell, Pagination, Spinner, Button, Chip } from "@nextui-org/react";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import {
@@ -77,14 +76,14 @@ export default function Page() {
             <ToastContainer autoClose={2000} position="top-center" />
             <div className="flex  justify-between">
                 <Link asChild href="/admin/member/create">
-                    <Button>New member</Button>
+                    <Button color="primary">New member</Button>
                 </Link>
                 <div className="flex gap-4">
                     <Input className="w-48" onChange={(e) => {
                         setSearchQuery(e.target.value);
                     }} placeholder="Search"></Input>
-                    <Button onClick={search}>Search</Button>
-                    <Button onClick={download}>Download as CSV</Button>
+                    <Button color="primary" onClick={search}>Search</Button>
+                    <Button color="primary" onClick={download}>Download as CSV</Button>
                 </div>
             </div>
 
@@ -115,17 +114,20 @@ export default function Page() {
                         <TableColumn allowsSorting key="code">
                             Code
                         </TableColumn>
+                        <TableColumn allowsSorting key="promotion">
+                            Promotion recevial
+                        </TableColumn>
+                        <TableColumn>
+                            idCard status
+                        </TableColumn>
+                        <TableColumn>
+                            Address proof status
+                        </TableColumn>
                         <TableColumn allowsSorting key="status">
                             Status
                         </TableColumn>
                         <TableColumn>
                             Reason for banning
-                        </TableColumn>
-                        <TableColumn allowsSorting key="promotion">
-                            Promotion recevial
-                        </TableColumn>
-                        <TableColumn>
-                            Financial proof
                         </TableColumn>
                         <TableColumn>
                             Actions
@@ -141,18 +143,35 @@ export default function Page() {
                                 <TableCell>{account.chineseSurname}</TableCell>
                                 <TableCell>{account.phone}</TableCell>
                                 <TableCell>{account.code}</TableCell>
-                                <TableCell>{account.status}</TableCell>
-                                <TableCell>{account.reasonForBanning}</TableCell>
                                 <TableCell>{account.promotion ? "Yes" : "No"}</TableCell>
                                 <TableCell>
-                                    {account.financialProof ?
-                                        <Button variant="link" asChild className="text-blue-500">
-                                            <Link href={account.financialProof}>{getFileNameFromUrl(account.financialProof)}</Link>
-                                        </Button>
-                                        : null}
+                                    {
+                                        account.idCardStatus === "0" ?
+                                            <Chip radius="sm" color="danger">{account.idCardStatus}</Chip> :
+                                            account.idCardStatus === "1" ?
+                                                <Chip radius="sm" color="warning">{account.idCardStatus}</Chip> :
+                                                <Chip radius="sm" color="success">{account.idCardStatus}</Chip>
+                                    }
                                 </TableCell>
                                 <TableCell>
-                                    <Button variant="outline" className="mr-2 py-1 px-2 text-xs h-7">
+                                    {
+                                        account.addressProofStatus === "0" ?
+                                            <Chip radius="sm" color="danger">{account.addressProofStatus}</Chip> :
+                                            account.addressProofStatus === "1" ?
+                                                <Chip radius="sm" color="warning">{account.addressProofStatus}</Chip> :
+                                                <Chip radius="sm" color="success">{account.addressProofStatus}</Chip>
+                                    }
+                                </TableCell>
+                                <TableCell>
+                                    {
+                                        account.status === "0" ?
+                                            <Chip radius="sm" color="danger">{account.status}</Chip> :
+                                            <Chip radius="sm" color="success">{account.status}</Chip>
+                                    }
+                                </TableCell>
+                                <TableCell>{account.reasonForBanning}</TableCell>
+                                <TableCell>
+                                    <Button asChild color="primary" variant="bordered" className="mr-2 py-1 px-2 text-xs h-7">
                                         <a href={"/admin/member/" + account._id} className="w-full">Edit</a>
                                     </Button>
                                 </TableCell>
