@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 
 
 export default function AdvancedDropzoneDemo({ defaultValue = [], maxFiles = 3, accept = "image/*", onChange }) {
-    const [extFiles, setExtFiles] = useState(defaultValue);
+    const [extFiles, setExtFiles] = useState();
     const [imageSrc, setImageSrc] = useState();
     const [videoSrc, setVideoSrc] = useState();
 
@@ -76,6 +76,9 @@ export default function AdvancedDropzoneDemo({ defaultValue = [], maxFiles = 3, 
         })
         onChange(files2);
     };
+    useEffect(() => {
+        setExtFiles(defaultValue);
+    }, []);
     return (
         <>
             <Dropzone

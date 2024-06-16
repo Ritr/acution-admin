@@ -33,10 +33,14 @@ export const {
                 if (!account) {
                     throw new AuthError("Email not found");
                 }
+                console.log(credentials.email);
+                console.log(credentials.password);
+
                 account = await Account.findOne({
                     email: credentials.email,
                     password: credentials.password,
                 });
+                console.log(account);
                 if (!account) {
                     throw new AuthError("Password error");
                 }

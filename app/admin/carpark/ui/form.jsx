@@ -327,7 +327,7 @@ export default function Page({ onOk, defaultProperty, loading }) {
                     }
                 </div>
                 <div>
-                    <Button className="w-full" color="primary" type="submit" loading={loading}>Submit</Button>
+                    <Button className="w-full" color="primary" type="submit" isLoading={loading}>Submit</Button>
                 </div>
             </form>
         </div>

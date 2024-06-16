@@ -32,7 +32,7 @@ export default function Page({ defaultMember = { password: "999999" }, submit, l
         });
     };
     const idCardStatus = watch("idCardStatus");
-    const addressProofStatus = watch("addressProofStatus");
+    const financialProofStatus = watch("financialProofStatus");
     return (
         <div className="pt-6">
             <form action="" onSubmit={handleSubmit(onSubmit)}>
@@ -106,7 +106,7 @@ export default function Page({ defaultMember = { password: "999999" }, submit, l
                         name="idCard"
                         control={control}
                         render={({ field }) => (
-                            <Upload maxFiles={4} {...field} defaultValue={formState.defaultValues.idCard ? formState.defaultValues.idCard : undefined} />
+                            <Upload maxFiles={4} {...field} defaultValue={formState.defaultValues.idCard ? [formState.defaultValues.idCard] : undefined} />
                         )}>
 
                     </Controller>
@@ -133,21 +133,21 @@ export default function Page({ defaultMember = { password: "999999" }, submit, l
                     </Controller>
                 </div>
                 <div className="pb-2">
-                    <Label>Address proof</Label>
+                    <Label>Financial proof</Label>
                     <Controller
-                        name="addressProof"
+                        name="financialProof"
                         control={control}
                         render={({ field }) => (
-                            <Upload maxFiles={4} {...field} defaultValue={formState.defaultValues.addressProof ? formState.defaultValues.addressProof : undefined} />
+                            <Upload maxFiles={4} {...field} defaultValue={formState.defaultValues.financialProof ? [formState.defaultValues.financialProof] : undefined} />
                         )}>
 
                     </Controller>
                 </div>
                 <div className="pb-2">
-                    <Label>Address proof status</Label>
+                    <Label>Financial proof status</Label>
                     <Controller
                         control={control}
-                        name="addressProofStatus"
+                        name="financialProofStatus"
                         render={({ field }) => (
                             <Select {...field} onValueChange={field.onChange} required>
                                 <SelectTrigger>
@@ -175,7 +175,7 @@ export default function Page({ defaultMember = { password: "999999" }, submit, l
                                     <SelectValue placeholder="Status" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem disabled={idCardStatus !== "2" || addressProofStatus !== "2"} value="1">Activated</SelectItem>
+                                    <SelectItem disabled={idCardStatus !== "2" || financialProofStatus !== "2"} value="1">Activated</SelectItem>
                                     <SelectItem value="0">Deactivated</SelectItem>
                                 </SelectContent>
                             </Select>
@@ -189,7 +189,7 @@ export default function Page({ defaultMember = { password: "999999" }, submit, l
                 </div>
 
                 <div>
-                    <Button className="w-full" color="primary" type="submit" loading={loading} >Submit</Button>
+                    <Button className="w-full" color="primary" type="submit" isLoading={loading} >Submit</Button>
                 </div>
             </form >
         </div >
