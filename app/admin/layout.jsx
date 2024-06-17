@@ -9,7 +9,7 @@ export default function Layout({ children }) {
                 <Header></Header>
             </div>
             <div className="border-t">
-                <div className="max-w-[1488px] mx-auto pt-2 px-6">
+                <div className="max-w-[1488px] mx-auto pb-8 pt-2 px-6">
                     {/* 面包屑导航栏 */}
                     <Nav />
                     {children}

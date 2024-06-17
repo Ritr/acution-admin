@@ -319,16 +319,12 @@ export default function Page({ onOk, defaultProperty, loading }) {
                     <Input type="datetime-local" {...register("postDateTime")} required></Input>
                 </div>
                 <div>
-                    {loading.toString()}
                     {
                         formData.post ?
                             <Button className="w-full" color="primary" type="submit" isLoading={loading}>Save And Post Website</Button> :
                             <Button className="w-full" color="secondary" isLoading={loading} onClick={onSave}>Save</Button>
                     }
-                </div>
-                <div>
-                    <Button className="w-full" color="primary" type="submit" isLoading={loading}>Submit</Button>
-                </div>
+                </div>             
             </form>
         </div>
     )

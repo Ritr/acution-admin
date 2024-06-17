@@ -111,6 +111,7 @@ export default function AdvancedDropzoneDemo({ defaultValue = [], maxFiles = 3, 
                             smartImgFit="center"
                             preview
                             imageUrl={file.url}
+                            downloadUrl={file.url}
                         /> : null
                     )
                 }) : null}

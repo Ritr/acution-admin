@@ -356,11 +356,11 @@ export default function Page({ onOk, defaultProperty, loading }) {
                     <Input id="brokerWeChat" name="brokerWeChat" placeholder="Broker&apos;s WeChat" {...register("brokerWeChat")} />
                 </div>
                 <div className="pb-2">
-                    <Label>Gross Floor Area</Label>
+                    <Label>Gross Floor Area (Sqft)</Label>
                     <Input id="constructionArea" title="only number" pattern="^(?!0\d)\d*(?:\.\d+)?$" name="constructionArea" placeholder="Gross Floor Area" {...register("constructionArea")} required />
                 </div>
                 <div className="pb-2">
-                    <Label>Saleable area</Label>
+                    <Label>Saleable area (Sqft)</Label>
                     <Input id="practicalArea" title="only number" pattern="^(?!0\d)\d*(?:\.\d+)?$" name="practicalArea" placeholder="Saleable area" {...register("practicalArea")} required />
                 </div>
 
@@ -375,7 +375,6 @@ export default function Page({ onOk, defaultProperty, loading }) {
                     <Input type="datetime-local" {...register("postDateTime")} required></Input>
                 </div>
                 <div>
-                    {loading.toString()}
                     {
                         formData.post ?
                             <Button className="w-full" color="primary" type="submit" isLoading={loading}>Save And Post Website</Button> :

@@ -158,6 +158,12 @@ export default function Page() {
                         <TableColumn allowsSorting key="startingPrice">
                             StartingPrice
                         </TableColumn>
+                        <TableColumn allowsSorting key="posted">
+                            Posted
+                        </TableColumn>
+                        <TableColumn allowsSorting key="postDateTime">
+                            Post dateTime
+                        </TableColumn>
                         <TableColumn allowsSorting key="phone">
                             Status
                         </TableColumn>
@@ -176,6 +182,8 @@ export default function Page() {
                                 <TableCell>{property.reservePrice}</TableCell>
                                 <TableCell>{property.currentPrice}</TableCell>
                                 <TableCell>{property.startingPrice?.toLocaleString()}</TableCell>
+                                <TableCell>{property.post ? "YES" : "NO"}</TableCell>
+                                <TableCell>{dayjs(property.postDateTime).format("YYYY-MM-DD")}</TableCell>
                                 <TableCell>
                                     {/* AboutToStart InProgress Completed Aborted Cancelled */}
                                     {
