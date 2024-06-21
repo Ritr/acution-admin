@@ -8,7 +8,7 @@ import {
 import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 const Page = ({ policy }) => {
-    const [traditionalChinesContent, setTraditionalChinesContent] = useState(policy.traditionalChinesContent);
+    const [traditionalChineseContent, setTraditionalChineseContent] = useState(policy.traditionalChineseContent);
     const [simplifiedChinesContent, setSimplifiedChinesContent] = useState(policy.simplifiedChinesContent);
     const [englishContent, setEnglishContent] = useState(policy.englishContent);
     const mutation = useMutation({
@@ -16,7 +16,7 @@ const Page = ({ policy }) => {
             const res = await fetch("/api/policy", {
                 method: "POST",
                 body: JSON.stringify({
-                    traditionalChinesContent,
+                    traditionalChineseContent,
                     simplifiedChinesContent,
                     englishContent,
                 })
@@ -25,7 +25,7 @@ const Page = ({ policy }) => {
         },
     });
     const save = () => {
-        if (!traditionalChinesContent) {
+        if (!traditionalChineseContent) {
             toast.error("Traditional Chinese content is required");
             return;
         }
@@ -59,7 +59,7 @@ const Page = ({ policy }) => {
             <ToastContainer autoClose={2000} position="top-center" />
             <Tabs className="w-full [&>div]:w-full">
                 <Tab key="TraditionalChines" title="Traditional Chinese">
-                    <Quill value={traditionalChinesContent} onChange={setTraditionalChinesContent} className="h-[400px]" />
+                    <Quill value={traditionalChineseContent} onChange={setTraditionalChineseContent} className="h-[400px]" />
                 </Tab>
                 <Tab key="SimplifiedChinese" title="Simplified Chinese">
                     <Quill value={simplifiedChinesContent} onChange={setSimplifiedChinesContent} className="h-[400px]" />

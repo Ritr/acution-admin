@@ -1,28 +1,40 @@
 import connectMongo from '@/lib/connect-mongo';
-import Policy from '@/models/policy';
+import Tagline from '@/models/tagline';
 import { NextResponse } from 'next/server';
 export async function GET() {
     await connectMongo();
-    const accounts = await Policy.find({});
+    const accounts = await Tagline.find({});
     return NextResponse.json(accounts);
 }
 export async function POST(request) {
     const {
-        traditionalChineseContent,
-        simplifiedChinesContent,
-        englishContent
+        traditionalChineseTitle,
+        simplifiedChinesTitle,
+        traditionalChineseText,
+        simplifiedChinesText,        
+        englishTitle,
+        englishText
     } = await request.json();
+    console.log(traditionalChineseTitle);
+    console.log(simplifiedChinesTitle);
+    console.log(traditionalChineseText);
+    console.log(simplifiedChinesText);
+    console.log(englishTitle);
+    console.log(englishText);
     await connectMongo();
     try {
         // 更新最新一条数据或者创建一条新数据
-        await Policy.findOneAndUpdate(
+        await Tagline.findOneAndUpdate(
             {}, // 查询条件,这里留空表示查找所有
             {
                 $set: {
                     // 要更新的字段及其值
-                    traditionalChineseContent,
-                    simplifiedChinesContent,
-                    englishContent
+                    traditionalChineseTitle,
+                    simplifiedChinesTitle,
+                    englishTitle,
+                    traditionalChineseText,
+                    simplifiedChinesText,
+                    englishText
                 }
             },
             {
