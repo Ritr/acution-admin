@@ -60,11 +60,11 @@ const Page = ({ tagline }) => {
                     <Tab key="SimplifiedChinese" title="Simplified Chinese">
                         <div className="pb-2">
                             <Label>Simplified chinese title</Label>
-                            <Input required {...register("traditionalChineseTitle")}></Input>
+                            <Input required {...register("simplifiedChineseTitle")}></Input>
                         </div>
                         <div className="pb-2">
                             <Label>Simplified chinese text</Label>
-                            <Textarea rows="5" required {...register("traditionalChineseText")}></Textarea>
+                            <Textarea rows="5" required {...register("simplifiedChineseText")}></Textarea>
                         </div>
                     </Tab>
                     <Tab key="English" title="English">

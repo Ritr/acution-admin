@@ -9,16 +9,16 @@ export async function GET() {
 export async function POST(request) {
     const {
         traditionalChineseTitle,
-        simplifiedChinesTitle,
         traditionalChineseText,
-        simplifiedChinesText,        
+        simplifiedChineseTitle,
+        simplifiedChineseText,
         englishTitle,
         englishText
     } = await request.json();
     console.log(traditionalChineseTitle);
-    console.log(simplifiedChinesTitle);
     console.log(traditionalChineseText);
-    console.log(simplifiedChinesText);
+    console.log("simplifiedChinesTitle", simplifiedChineseTitle);
+    console.log("simplifiedChinesText", simplifiedChineseTitle);
     console.log(englishTitle);
     console.log(englishText);
     await connectMongo();
@@ -30,10 +30,10 @@ export async function POST(request) {
                 $set: {
                     // 要更新的字段及其值
                     traditionalChineseTitle,
-                    simplifiedChinesTitle,
+                    simplifiedChineseTitle,
                     englishTitle,
                     traditionalChineseText,
-                    simplifiedChinesText,
+                    simplifiedChineseText,
                     englishText
                 }
             },
