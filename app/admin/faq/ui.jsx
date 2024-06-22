@@ -7,13 +7,13 @@ import {
 } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
-const Page = ({ policy }) => {
-    const [traditionalChineseContent, setTraditionalChineseContent] = useState(policy.traditionalChineseContent);
-    const [simplifiedChineseContent, setSimplifiedChinesContent] = useState(policy.simplifiedChineseContent);
-    const [englishContent, setEnglishContent] = useState(policy.englishContent);
+const Page = ({ faq }) => {
+    const [traditionalChineseContent, setTraditionalChineseContent] = useState(faq.traditionalChineseContent);
+    const [simplifiedChineseContent, setSimplifiedChinesContent] = useState(faq.simplifiedChineseContent);
+    const [englishContent, setEnglishContent] = useState(faq.englishContent);
     const mutation = useMutation({
         mutationFn: async () => {
-            const res = await fetch("/api/policy", {
+            const res = await fetch("/api/faq", {
                 method: "POST",
                 body: JSON.stringify({
                     traditionalChineseContent,
@@ -59,13 +59,13 @@ const Page = ({ policy }) => {
             <ToastContainer autoClose={2000} position="top-center" />
             <Tabs className="w-full [&>div]:w-full">
                 <Tab key="TraditionalChines" title="Traditional Chinese">
-                    <Quill value={traditionalChineseContent} onChange={setTraditionalChineseContent} className="h-[400px]" />
+                    <Quill value={traditionalChineseContent} onChange={setTraditionalChineseContent} className="h-[600px]" />
                 </Tab>
                 <Tab key="SimplifiedChinese" title="Simplified Chinese">
-                    <Quill value={simplifiedChineseContent} onChange={setSimplifiedChinesContent} className="h-[400px]" />
+                    <Quill value={simplifiedChineseContent} onChange={setSimplifiedChinesContent} className="h-[600px]" />
                 </Tab>
                 <Tab key="English" title="English">
-                    <Quill value={englishContent} onChange={setEnglishContent} className="h-[400px]" />
+                    <Quill value={englishContent} onChange={setEnglishContent} className="h-[600px]" />
                 </Tab>
             </Tabs>
             <Button isLoading={mutation.isPending} onClick={save} color="primary" className="mt-10">Save</Button>

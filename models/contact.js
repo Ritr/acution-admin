@@ -5,16 +5,18 @@ import { model, models, Schema } from 'mongoose';
 // - 選項：不同意接收推廣資訊
 
 // > 檢查密碼與確認密碼是否一致
-const PolicySchema = new Schema(
+const ContactSchema = new Schema(
     {
-        traditionalChineseContent: String,
-        simplifiedChineseContent: String,
-        englishContent: String,
+        traditionalChineseAddress: String,
+        simplifiedChineseAddress: String,
+        englishAddress: String,
+        phone: String,
+        email: String,
         createdAt: {
             type: Date,
             default: Date.now,
         },
     }
 );
-const Policy = models.Policy || model('Policy', PolicySchema, 'policy');
-export default Policy;
+const Contact = models.Contact || model('Contact', ContactSchema, 'contact');
+export default Contact;

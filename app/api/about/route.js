@@ -1,9 +1,9 @@
 import connectMongo from '@/lib/connect-mongo';
-import Policy from '@/models/policy';
+import About from '@/models/about';
 import { NextResponse } from 'next/server';
 export async function GET() {
     await connectMongo();
-    const accounts = await Policy.find({});
+    const accounts = await About.find({});
     return NextResponse.json(accounts);
 }
 export async function POST(request) {
@@ -12,10 +12,12 @@ export async function POST(request) {
         simplifiedChineseContent,
         englishContent
     } = await request.json();
+
+    console.log(traditionalChineseContent, simplifiedChineseContent, englishContent);
     await connectMongo();
     try {
         // 更新最新一条数据或者创建一条新数据
-        await Policy.findOneAndUpdate(
+        await About.findOneAndUpdate(
             {}, // 查询条件,这里留空表示查找所有
             {
                 $set: {

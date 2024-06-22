@@ -7,13 +7,13 @@ import {
 } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
-const Page = ({ policy }) => {
-    const [traditionalChineseContent, setTraditionalChineseContent] = useState(policy.traditionalChineseContent);
-    const [simplifiedChineseContent, setSimplifiedChinesContent] = useState(policy.simplifiedChineseContent);
-    const [englishContent, setEnglishContent] = useState(policy.englishContent);
+const Page = ({ about }) => {
+    const [traditionalChineseContent, setTraditionalChineseContent] = useState(about.traditionalChineseContent);
+    const [simplifiedChineseContent, setSimplifiedChinesContent] = useState(about.simplifiedChineseContent);
+    const [englishContent, setEnglishContent] = useState(about.englishContent);
     const mutation = useMutation({
         mutationFn: async () => {
-            const res = await fetch("/api/policy", {
+            const res = await fetch("/api/about", {
                 method: "POST",
                 body: JSON.stringify({
                     traditionalChineseContent,

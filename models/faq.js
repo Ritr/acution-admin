@@ -5,7 +5,7 @@ import { model, models, Schema } from 'mongoose';
 // - 選項：不同意接收推廣資訊
 
 // > 檢查密碼與確認密碼是否一致
-const PolicySchema = new Schema(
+const FAQSchema = new Schema(
     {
         traditionalChineseContent: String,
         simplifiedChineseContent: String,
@@ -16,5 +16,5 @@ const PolicySchema = new Schema(
         },
     }
 );
-const Policy = models.Policy || model('Policy', PolicySchema, 'policy');
-export default Policy;
+const FAQ = models.FAQ || model('FAQ', FAQSchema, 'faq');
+export default FAQ;

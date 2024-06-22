@@ -1,9 +1,9 @@
 import connectMongo from '@/lib/connect-mongo';
-import Policy from '@/models/policy';
+import FAQ from '@/models/faq';
 import { NextResponse } from 'next/server';
 export async function GET() {
     await connectMongo();
-    const accounts = await Policy.find({});
+    const accounts = await FAQ.find({});
     return NextResponse.json(accounts);
 }
 export async function POST(request) {
@@ -15,7 +15,7 @@ export async function POST(request) {
     await connectMongo();
     try {
         // 更新最新一条数据或者创建一条新数据
-        await Policy.findOneAndUpdate(
+        await FAQ.findOneAndUpdate(
             {}, // 查询条件,这里留空表示查找所有
             {
                 $set: {
