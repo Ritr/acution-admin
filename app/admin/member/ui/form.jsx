@@ -12,14 +12,36 @@ import {
 import { useForm, Controller } from "react-hook-form";
 import codeList from "@/utils/code";
 import Upload from "@/app/ui/upload";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function Page({ defaultMember = { password: "999999" }, submit, loading }) {
     const { register, handleSubmit, control, watch, formState } = useForm({
         defaultValues: {
+            addressProofStatus: "2",
+            idCardStatus: "2",
+            status: "1",
             ...defaultMember
         },
     });
     const onSubmit = (data) => {
+
+        if (data.code === "+852" || data.code === "+853") {
+            if (data.phone.length !== 8) {
+                toast.warn("The phone number needs to be 8 digits");
+                return;
+            }
+        } else if (data.code === "+86") {
+            if (data.phone.length !== 10 || data.phone.length !== 11) {
+                toast.warn("The phone number needs to be 9 digits");
+
+                return;
+            }
+        } else if (data.code === "886") {
+            if (data.phone.length !== 9) {
+                toast.warn("The phone number needs to be 10 or 11 digits");
+                return;
+            }
+        }
         let code = null;
         codeList.find((item) => {
             if (item.en === data.countryAndRegion) {
@@ -32,9 +54,10 @@ export default function Page({ defaultMember = { password: "999999" }, submit, l
         });
     };
     const idCardStatus = watch("idCardStatus");
-    const financialProofStatus = watch("financialProofStatus");
+    const addressProofStatus = watch("addressProofStatus");
     return (
         <div className="pt-6">
+            <ToastContainer autoClose={2000} position="top-center" />
             <form action="" onSubmit={handleSubmit(onSubmit)}>
                 <div className="pb-2">
                     <Label>Email</Label>
@@ -105,8 +128,9 @@ export default function Page({ defaultMember = { password: "999999" }, submit, l
                     <Controller
                         name="idCard"
                         control={control}
+                        accept="image/*,.pdf"
                         render={({ field }) => (
-                            <Upload maxFiles={4} {...field} defaultValue={formState.defaultValues.idCard ? [formState.defaultValues.idCard] : undefined} />
+                            <Upload maxFiles={1} {...field} defaultValue={formState.defaultValues.idCard ? [formState.defaultValues.idCard] : undefined} />
                         )}>
 
                     </Controller>
@@ -133,21 +157,21 @@ export default function Page({ defaultMember = { password: "999999" }, submit, l
                     </Controller>
                 </div>
                 <div className="pb-2">
-                    <Label>Financial proof</Label>
+                    <Label>Address proof</Label>
                     <Controller
-                        name="financialProof"
+                        name="addressProof"
                         control={control}
                         render={({ field }) => (
-                            <Upload maxFiles={4} {...field} defaultValue={formState.defaultValues.financialProof ? [formState.defaultValues.financialProof] : undefined} />
+                            <Upload accept="image/*,.pdf" maxFiles={1} {...field} defaultValue={formState.defaultValues.addressProof ? [formState.defaultValues.addressProof] : undefined} />
                         )}>
 
                     </Controller>
                 </div>
                 <div className="pb-2">
-                    <Label>Financial proof status</Label>
+                    <Label>Address proof status</Label>
                     <Controller
                         control={control}
-                        name="financialProofStatus"
+                        name="addressProofStatus"
                         render={({ field }) => (
                             <Select {...field} onValueChange={field.onChange} required>
                                 <SelectTrigger>
@@ -175,7 +199,7 @@ export default function Page({ defaultMember = { password: "999999" }, submit, l
                                     <SelectValue placeholder="Status" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem disabled={idCardStatus !== "2" || financialProofStatus !== "2"} value="1">Activated</SelectItem>
+                                    <SelectItem disabled={idCardStatus !== "2" || addressProofStatus !== "2"} value="1">Activated</SelectItem>
                                     <SelectItem value="0">Deactivated</SelectItem>
                                 </SelectContent>
                             </Select>

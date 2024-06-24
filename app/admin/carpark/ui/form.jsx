@@ -242,7 +242,7 @@ export default function Page({ onOk, defaultProperty, loading }) {
                         name="otherImages"
                         control={control}
                         render={({ field }) => (
-                            <Upload maxFiles={4} {...field} defaultValue={formState.defaultValues.otherImages ? formState.defaultValues.otherImages : null} />
+                            <Upload accept="image/*,video/mp4, video/webm, video/avi" maxFiles={4} {...field} defaultValue={formState.defaultValues.otherImages ? formState.defaultValues.otherImages : null} />
                         )}>
 
                     </Controller>
@@ -324,7 +324,7 @@ export default function Page({ onOk, defaultProperty, loading }) {
                             <Button className="w-full" color="primary" type="submit" isLoading={loading}>Save And Post Website</Button> :
                             <Button className="w-full" color="secondary" isLoading={loading} onClick={onSave}>Save</Button>
                     }
-                </div>             
+                </div>
             </form>
         </div>
     )

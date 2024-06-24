@@ -96,7 +96,7 @@ const Header = () => {
                             </DropdownTrigger>
                             <DropdownMenu aria-label="Static Actions">
                                 <DropdownItem key="new">
-                                    <Link href="/logout">Logout</Link>
+                                    <Link href="/logout" className="w-full h-full flex">Logout</Link>
                                 </DropdownItem>
                             </DropdownMenu>
                         </Dropdown>

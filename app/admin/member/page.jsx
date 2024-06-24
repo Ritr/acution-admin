@@ -121,7 +121,7 @@ export default function Page() {
                             idCard status
                         </TableColumn>
                         <TableColumn>
-                            Finacial proof status
+                            Address proof status
                         </TableColumn>
                         <TableColumn allowsSorting key="status">
                             Status
@@ -155,9 +155,9 @@ export default function Page() {
                                 </TableCell>
                                 <TableCell>
                                     {
-                                        account.financialProofStatus === "0" ?
+                                        account.addressProofStatus === "0" ?
                                             <Chip radius="sm" color="danger">To be submit</Chip> :
-                                            account.financialProofStatus === "1" ?
+                                            account.addressProofStatus === "1" ?
                                                 <Chip radius="sm" color="warning">To be Approved</Chip> :
                                                 <Chip radius="sm" color="success">Approved</Chip>
                                     }

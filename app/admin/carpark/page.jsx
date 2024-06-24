@@ -38,7 +38,7 @@ export default function Page() {
             // 创建一个临时链接并点击它来下载文件
             const downloadLink = document.createElement('a');
             downloadLink.setAttribute('href', URL.createObjectURL(blob));
-            downloadLink.setAttribute('download', 'properties'+dayjs().format("YYYYMMDDHHmmss")+'.csv');
+            downloadLink.setAttribute('download', 'properties' + dayjs().format("YYYYMMDDHHmmss") + '.csv');
             document.body.appendChild(downloadLink);
             downloadLink.click();
             document.body.removeChild(downloadLink);
@@ -158,6 +158,12 @@ export default function Page() {
                         <TableColumn allowsSorting key="startingPrice">
                             StartingPrice
                         </TableColumn>
+                        <TableColumn allowsSorting key="posted">
+                            Posted
+                        </TableColumn>
+                        <TableColumn allowsSorting key="postDateTime">
+                            Post dateTime
+                        </TableColumn>
                         <TableColumn allowsSorting key="phone">
                             Status
                         </TableColumn>
@@ -176,6 +182,8 @@ export default function Page() {
                                 <TableCell>{carpark.reservePrice}</TableCell>
                                 <TableCell>{carpark.currentPrice}</TableCell>
                                 <TableCell>{carpark.startingPrice.toLocaleString()}</TableCell>
+                                <TableCell>{carpark.post ? "YES" : "NO"}</TableCell>
+                                <TableCell>{dayjs(carpark.postDateTime).format("YYYY-MM-DD")}</TableCell>
                                 <TableCell>
                                     {/* AboutToStart InProgress Completed Aborted Cancelled */}
                                     {

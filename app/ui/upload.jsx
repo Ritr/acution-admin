@@ -76,6 +76,15 @@ export default function AdvancedDropzoneDemo({ defaultValue = [], maxFiles = 3, 
         })
         onChange(files2);
     };
+    const isVideo = (fileName) => {
+        if (!fileName) return false;
+        const fileExtension = fileName.split('.').pop();
+        if (fileExtension === "mp4" || fileExtension === "webm" || fileExtension === "avi") {
+            return true;
+        }
+        return false;
+
+    }
     useEffect(() => {
         setExtFiles(defaultValue);
     }, []);
@@ -110,7 +119,8 @@ export default function AdvancedDropzoneDemo({ defaultValue = [], maxFiles = 3, 
                             alwaysActive
                             smartImgFit="center"
                             preview
-                            imageUrl={file.url}
+                            imageUrl={!isVideo(file.name) ? file.url : null}
+                            videoUrl={isVideo(file.name) ? file.url : null}
                             downloadUrl={file.url}
                         /> : null
                     )
@@ -125,7 +135,15 @@ export default function AdvancedDropzoneDemo({ defaultValue = [], maxFiles = 3, 
                     <ImagePreview src={imageSrc} />
                 </FullScreen>
             }
-
+            {
+                videoSrc &&
+                <FullScreen
+                    open={videoSrc !== undefined}
+                    onClose={() => setVideoSrc(undefined)}
+                >
+                    <VideoPreview src={videoSrc} autoPlay controls />
+                </FullScreen>
+            }
         </>
     );
 }

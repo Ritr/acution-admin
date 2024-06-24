@@ -952,26 +952,33 @@ const json = {
 
     ],
     status: [
+        // {
+        //     "id": "7-1",
+        //     "value": "InProgress",
+        //     "label1": "正在進行",
+        //     "label2": "正在进行",
+        //     "label3": "in progress"
+        // },
+        // {
+        //     "id": "7-2",
+        //     "value": "AboutToStart",
+        //     "label1": "即將開始",
+        //     "label2": "即将开始",
+        //     "label3": "about to start"
+        // },
+        // {
+        //     "id": "7-3",
+        //     "value": "Completed",
+        //     "label1": "已結束",
+        //     "label2": "已结束",
+        //     "label3": "completed"
+        // },
         {
-            "id": "7-1",
-            "value": "InProgress",
-            "label1": "正在進行",
-            "label2": "正在进行",
-            "label3": "in progress"
-        },
-        {
-            "id": "7-2",
-            "value": "AboutToStart",
-            "label1": "即將開始",
-            "label2": "即将开始",
-            "label3": "about to start"
-        },
-        {
-            "id": "7-3",
-            "value": "Completed",
-            "label1": "已結束",
-            "label2": "已结束",
-            "label3": "completed"
+            "id": "7-6",
+            "value": "Auto",
+            "label1": "自动",
+            "label2": "自动",
+            "label3": "auto"
         },
         {
             "id": "7-4",

@@ -290,7 +290,12 @@ export default function Page({ onOk, defaultProperty, loading }) {
                         name="otherImages"
                         control={control}
                         render={({ field }) => (
-                            <Upload maxFiles={4} {...field} defaultValue={formState.defaultValues.otherImages ? formState.defaultValues.otherImages : undefined} />
+                            <Upload
+                                accept="image/*,video/mp4, video/webm, video/avi"
+                                maxFiles={4}
+                                {...field}
+                                defaultValue={formState.defaultValues.otherImages ? formState.defaultValues.otherImages : undefined}
+                            />
                         )}>
 
                     </Controller>
