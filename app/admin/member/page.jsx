@@ -8,9 +8,18 @@ import {
 } from "@tanstack/react-query";
 import { ToastContainer, toast } from "react-toastify";
 import dayjs from "dayjs";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 export default function Page() {
     const [list, setList] = useState([]);
     // const [totalCount, setTotalCount] = useState(0);
+    const [idCardStatus, setIdCardStatus] = useState(null);
+    const [addressProofStatus, setAddressProofStatus] = useState(null);
     const [searchQuery, setSearchQuery] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
@@ -36,6 +45,12 @@ export default function Page() {
     const mutation = useMutation({
         mutationFn: () => {
             let url = `/api/member?page=${currentPage}&searchQuery=${searchQuery}`;
+            if (idCardStatus) {
+                url += `&idCardStatus=${idCardStatus}`;
+            }
+            if (addressProofStatus) {
+                url += `&addressProofStatus=${addressProofStatus}`;
+            }
             if (sortDescriptor) {
                 url += `&sortField=${sortDescriptor.column}&sortOrder=${sortDescriptor.direction === "ascending" ? 1 : -1}`;
             }
@@ -78,12 +93,38 @@ export default function Page() {
                 <Link asChild href="/admin/member/create">
                     <Button color="primary">New member</Button>
                 </Link>
-                <div className="flex gap-4">
+                <div className="flex gap-2">
+                    <div className="w-60">
+                        <Select onValueChange={setIdCardStatus}>
+                            <SelectTrigger>
+                                <SelectValue placeholder="Select idCard status" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value={null}>All</SelectItem>
+                                <SelectItem value="0">To be submitted</SelectItem>
+                                <SelectItem value="1">To be Approved</SelectItem>
+                                <SelectItem value="2">Approved</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+                    <div className="w-60">
+                        <Select onValueChange={setAddressProofStatus}>
+                            <SelectTrigger>
+                                <SelectValue placeholder="Select address proof status" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value={null}>All</SelectItem>
+                                <SelectItem value="0">To be submitted</SelectItem>
+                                <SelectItem value="1">To be Approved</SelectItem>
+                                <SelectItem value="2">Approved</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
                     <Input className="w-48" onChange={(e) => {
                         setSearchQuery(e.target.value);
                     }} placeholder="Search"></Input>
                     <Button color="primary" onClick={search}>Search</Button>
-                    <Button color="primary" onClick={download}>Download as CSV</Button>
+                    <Button className="max-w-40" color="primary" onClick={download}>Download as CSV</Button>
                 </div>
             </div>
 

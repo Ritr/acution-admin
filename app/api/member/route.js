@@ -6,19 +6,26 @@ export async function GET(request) {
     const page = searchParams.get("page");
     const limit = searchParams.get("limit") || 10;
     const searchQuery = searchParams.get("searchQuery");
+    const idCardStatus = searchParams.get("idCardStatus");
+    const addressProofStatus = searchParams.get("addressProofStatus");
     const sortField = searchParams.get("sortField") || "createdAt"; // 默认按创建时间排序
     const sortOrder = searchParams.get("sortOrder") || -1; // 默认降序
-    console.log("sortOrder", sortOrder);
-    console.log("sortField", sortField);
+    console.log(idCardStatus);
+    console.log(addressProofStatus);
     try {
         await connectMongo();
-        const query = searchQuery
+        const query = (searchQuery || idCardStatus || addressProofStatus)
             ? {
                 $or: [
                     { name: { $regex: searchQuery, $options: 'i' } },
                     { email: { $regex: searchQuery, $options: 'i' } },
                     { phone: { $regex: searchQuery, $options: 'i' } },
                 ],
+                idCardStatus: idCardStatus !== null ? idCardStatus : { $exists: true },
+                addressProofStatus: addressProofStatus !== null ? addressProofStatus : { $exists: true }
+
+                // idCardStatus: "2",
+                // addressProofStatus: "2"
             }
             : {};
         const users = await User.find(query)
